@@ -1,0 +1,15 @@
+Riffle
+
+A Swiss Army asynchronous control flow function for JavaScript.
+
+    Documentation:  http://bigeasy.github.io/riffle
+    Source:         http://github.com/bigeasy/riffle
+    Issues:         http://github.com/bigeasy/riffle/issues
+
+    Install:        `npm install riffle`
+
+    License:        MIT
+
+To learn everything you want to know about Riffle start here:
+
+    http://bigeasy.github.io/riffle

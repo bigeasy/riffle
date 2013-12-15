@@ -1,0 +1,44 @@
+{
+    "name":             "riffle",
+    "version":          "0.0.0",
+    "author":           "Alan Gutierrez <alan@prettyrobots.com>",
+    "description":      "Forward and reverse iteration of a Strata b-tree.",
+    "url":              "http://bigeasy.github.com/riffle",
+    "keywords":
+    [
+                        "btree", "leveldb", "levelup", "binary",
+                        "database", "json", "b-tree", "concurrent", "persistence"
+    ],
+    "contributors":     [],
+    "homepage":         "https://github.com/bigeasy/riffle",
+    "bugs":             "https://github.com/bigeasy/riffle/issues",
+    "licenses":
+    [{
+                        "type": "MIT",
+                        "url": "http://github.com/bigeasy/riffle/raw/master/LICENSE"
+    }],
+    "repository":
+    {
+                        "type": "git",
+                        "url": "http://github.com/bigeasy/riffle.git"
+    },
+    "dependencies":
+    {
+                        "cadence":            "0.0.26",
+                        "abstract-leveldown": "~0.11",
+                        "sequester":          "0.0.1",
+                        "rimraf":             "~2.2",
+                        "timezone":           "0.0.22",
+                        "mkdirp":             "~0.3",
+                        "b-tree":             "0.0.6"
+    },
+    "devDependencies":
+    {
+                        "proof":  "0.0.36",
+                        "tap":    "*"
+    },
+    "scripts":
+    {
+                        "test": "proof platform win32 && proof test */*/*.t.js || t/test"
+    }
+}
