@@ -4,7 +4,7 @@ function yes () { return true }
 
 function Forward (cursor) {
     this._cursor = cursor
-    this._index = cursor.index
+    this._index = cursor.offset
 }
 
 Forward.prototype.next = cadence(function (step, condition) {
@@ -13,7 +13,9 @@ Forward.prototype.next = cadence(function (step, condition) {
         if (this._index < this._cursor.length) return true
         else step(function () {
             this._cursor.next(step())
-            this._index = 0
+        }, function (more) {
+            this._index = this._cursor.offset
+            return more
         })
     }, function (more) {
         if (!more) {
