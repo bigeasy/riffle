@@ -1,0 +1,34 @@
+{
+    "0": {
+        "children": [ 1, 5, 3 ]
+    },
+    "1": {
+        "log": [
+            { "type": "pos" },
+            { "type": "add", "value": "a" },
+            { "type": "add", "value": "b" },
+            { "type": "add", "value": "c" },
+            { "type": "pos" }
+        ],
+        "right": 5
+    },
+    "3": {
+        "log": [
+            { "type": "pos" },
+            { "type": "add", "value": "g" },
+            { "type": "add", "value": "h" },
+            { "type": "add", "value": "i" },
+            { "type": "pos" }
+        ]
+    },
+    "5": {
+        "log": [
+            { "type": "pos" },
+            { "type": "add", "value": "d" },
+            { "type": "add", "value": "e" },
+            { "type": "add", "value": "f" },
+            { "type": "pos" }
+        ],
+        "right": 3
+    }
+}
