@@ -23,6 +23,6 @@ require('./proof')(1, function (step, serialize, deepEqual, Strata, tmp) {
             return records
         })
     }, function (records) {
-        deepEqual([], records, 'records')
+        deepEqual(records, [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' ], 'records')
     })
 })
