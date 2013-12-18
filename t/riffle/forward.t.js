@@ -10,8 +10,10 @@ require('./proof')(2, function (step, serialize, deepEqual, Strata, tmp) {
     }, function (iterator) {
         var records = []
         step(function () {
+            var count = 0
             step(function () {
-                iterator.next(step())
+                if (count % 1) iterator.next(step())
+                else iterator.next(function (record) { return count++ > 0 }, step())
             }, function (record) {
                 if (record) records.push(record)
                 else step(null, records)
@@ -22,7 +24,7 @@ require('./proof')(2, function (step, serialize, deepEqual, Strata, tmp) {
             return records
         })
     }, function (records) {
-        deepEqual(records, [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' ], 'keyed')
+        deepEqual(records, [ 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' ], 'keyed')
     }, function () {
         riffle.forward(strata, step())
     }, function (iterator) {

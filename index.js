@@ -9,7 +9,7 @@ function Forward (cursor) {
 
 Forward.prototype.next = cadence(function (step, condition) {
     condition = condition || yes
-    var next = step(function (more) {
+    step(function () {
         if (this._index < this._cursor.length) return true
         else step(function () {
             this._cursor.next(step())
