@@ -22,9 +22,9 @@ Forward.prototype.next = cadence(function (step, condition) {
         } else {
             this._cursor.get(this._index++, step())
         }
-    }, function (record) {
-        if (condition(record)) {
-            step(null, record)
+    }, function (record, key) {
+        if (condition(key)) {
+            step(null, record, key)
         }
     })()
 })
