@@ -25,7 +25,7 @@
     "dependencies":
     {
                         "cadence":            "0.0.26",
-                        "b-tree":             "0.0.7"
+                        "b-tree":             "0.0.8"
     },
     "devDependencies":
     {
