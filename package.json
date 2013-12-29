@@ -1,6 +1,6 @@
 {
     "name":             "riffle",
-    "version":          "0.0.2",
+    "version":          "0.0.3",
     "author":           "Alan Gutierrez <alan@prettyrobots.com>",
     "description":      "Forward and reverse iteration of a Strata b-tree.",
     "url":              "http://bigeasy.github.com/riffle",
