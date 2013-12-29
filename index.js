@@ -61,13 +61,17 @@ Reverse.prototype.next = cadence(function (step, condition) {
                     this._cursor.get(0, step())
                 }, function (key) {
                     this._cursor.unlock()
-                    this._strata.iterator(this._strata.leftOf(key), step())
+                    step(function () {
+                        exports._racer(key, step())
+                    }, function () {
+                        this._strata.iterator(this._strata.leftOf(key), step())
+                    })
                 }, function (cursor) {
                     this._cursor = cursor
                     if (this._cursor.right == address) {
                         this._index = this._cursor.length - 1
                     } else {
-                        throw new Error
+                        this._index = this._cursor.offset - 1
                     }
                 })
             })
@@ -93,3 +97,5 @@ exports.reverse = cadence(function (step, strata, key) {
         return new Reverse(strata, cursor)
     })
 })
+
+exports._racer = function (key, callback) { callback() }

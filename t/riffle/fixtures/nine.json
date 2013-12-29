@@ -1,6 +1,6 @@
 {
     "0": {
-        "children": [ 1, 5, 3 ]
+        "children": [ 1, 5, 3, 7 ]
     },
     "1": {
         "log": [
@@ -16,6 +16,12 @@
         "log": [
             { "type": "pos" },
             { "type": "add", "value": "g" },
+            { "type": "pos" }
+        ],
+        "right": 7
+    },
+    "7": {
+        "log": [
             { "type": "add", "value": "h" },
             { "type": "add", "value": "i" },
             { "type": "pos" }
