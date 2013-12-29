@@ -24,12 +24,12 @@
     },
     "dependencies":
     {
-                        "cadence":            "0.0.26",
-                        "b-tree":             "0.0.9"
+                        "cadence":            "0.0.26"
     },
     "devDependencies":
     {
-                        "proof":  "0.0.36"
+                        "proof":              "0.0.36",
+                        "b-tree":             "0.0.10"
     },
     "scripts":
     {
