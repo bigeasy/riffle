@@ -47,7 +47,7 @@ exports.forward = cadence(function (step, strata, key) {
 function Reverse (strata, cursor) {
     this._strata = strata
     this._cursor = cursor
-    this._index = Math.min(cursor.offset, cursor.length - 1)
+    this._index = cursor.index < 0 ? ~cursor.index - 1 : cursor.index
 }
 
 Reverse.prototype.next = cadence(function (step, condition) {

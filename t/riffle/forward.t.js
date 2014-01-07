@@ -24,7 +24,7 @@ require('./proof')(2, function (step, serialize, deepEqual, Strata, tmp) {
             return records
         })
     }, function (records) {
-        deepEqual(records, [ 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' ], 'keyed')
+        deepEqual(records, [ 'b', 'c', 'd', 'f', 'g', 'h', 'i' ], 'keyed')
     }, function () {
         riffle.forward(strata, step())
     }, function (iterator) {
@@ -42,7 +42,7 @@ require('./proof')(2, function (step, serialize, deepEqual, Strata, tmp) {
             return records
         })
     }, function (records) {
-        deepEqual(records, [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' ], 'left most')
+        deepEqual(records, [ 'a', 'b', 'c', 'd', 'f', 'g', 'h', 'i' ], 'left most')
     }, function () {
         strata.close(step())
     })
