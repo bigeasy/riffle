@@ -1,4 +1,4 @@
-require('./proof')(5, function (step, equal, ok, Strata, tmp) {
+require('./proof')(10, function (step, equal, ok, Strata, tmp) {
     var strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 })
     var riffle = require('../..')
     step(function () {
@@ -42,6 +42,39 @@ require('./proof')(5, function (step, equal, ok, Strata, tmp) {
             iterator.next(step())
         }, function (record) {
             ok(record == null, 'forward keyed single greater than done')
+            iterator.unlock()
+        })
+    }, function () {
+        riffle.reverse(strata, 'm', step())
+    }, function (iterator) {
+        step(function () {
+            iterator.next(step())
+        }, function (record) {
+            equal(record, 'm', 'reverse keyed single equal')
+            iterator.next(step())
+        }, function (record) {
+            ok(record == null, 'reverse keyed single equal done')
+            iterator.unlock()
+        })
+    }, function () {
+        riffle.reverse(strata, 'z', step())
+    }, function (iterator) {
+        step(function () {
+            iterator.next(step())
+        }, function (record) {
+            equal(record, 'm', 'reverse keyed single greater than')
+            iterator.next(step())
+        }, function (record) {
+            ok(record == null, 'reverse keyed single greater than done')
+            iterator.unlock()
+        })
+    }, function () {
+        riffle.reverse(strata, 'a', step())
+    }, function (iterator) {
+        step(function () {
+            iterator.next(step())
+        }, function (record) {
+            ok(record == null, 'reverse keyed single less than done')
             iterator.unlock()
         })
     }, function () {
