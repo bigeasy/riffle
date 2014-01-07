@@ -1,6 +1,8 @@
 Riffle
 
-A Swiss Army asynchronous control flow function for JavaScript.
+Forward and reverse iteration of a Strata b-tree.
+
+    Discussion:     http://bigeasy.github.io/riffle/issues/4
 
     Documentation:  http://bigeasy.github.io/riffle
     Source:         http://github.com/bigeasy/riffle
