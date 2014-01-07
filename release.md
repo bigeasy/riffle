@@ -13,5 +13,6 @@ one from it to find the first key less than the sought index.
 
 ### Issue by Issue
 
+ * Implement reverse on an empty tree. #23.
  * Implement forward on an empty tree. #22.
  * Reverse when key does not exist is off by one. #21.
