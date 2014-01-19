@@ -6,6 +6,7 @@ records.
 
 ### Issue by Issue
 
- * Upgrade Cadence to 0.0.33. #30.
  * Upgrade Proof to 0.0.41. #31.
+ * Upgrade Cadence to 0.0.33. #30.
+ * Upgrade Strata to 0.0.16. #29.
  * Test keys returned by iterator. #28.
