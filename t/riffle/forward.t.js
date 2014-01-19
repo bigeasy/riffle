@@ -1,4 +1,4 @@
-require('./proof')(2, function (step, serialize, deepEqual, Strata, tmp) {
+require('./proof')(3, function (step, serialize, deepEqual, Strata, tmp) {
     var strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 }),
         riffle = require('../..')
     step(function () {
@@ -8,23 +8,28 @@ require('./proof')(2, function (step, serialize, deepEqual, Strata, tmp) {
     }, function () {
         riffle.forward(strata, 'a', step())
     }, function (iterator) {
-        var records = []
+        var records = [], keys = []
         step(function () {
             var count = 0
             step(function () {
                 if (count % 1) iterator.next(step())
                 else iterator.next(function (record) { return count++ > 0 }, step())
-            }, function (record) {
-                if (record) records.push(record)
-                else step(null, records)
+            }, function (record, key) {
+                if (record && key) {
+                    records.push(record)
+                    keys.push(key)
+                } else {
+                    step(null, records)
+                }
             })()
         }, function () {
             iterator.unlock()
         }, function () {
-            return records
+            step(null, records, keys)
         })
-    }, function (records) {
-        deepEqual(records, [ 'b', 'c', 'd', 'f', 'g', 'h', 'i' ], 'keyed')
+    }, function (records, keys) {
+        deepEqual(records, [ 'b', 'c', 'd', 'f', 'g', 'h', 'i' ], 'keyed records')
+        deepEqual(keys, [ 'b', 'c', 'd', 'f', 'g', 'h', 'i' ], 'keyed keys')
     }, function () {
         riffle.forward(strata, step())
     }, function (iterator) {
