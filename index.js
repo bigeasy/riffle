@@ -24,9 +24,9 @@ Forward.prototype.next = cadence(function (step, condition) {
         } else {
             this._cursor.get(this._index++, step())
         }
-    }, function (record, key) {
+    }, function (record, key, size) {
         if (condition(key)) {
-            step(null, record, key)
+            step(null, record, key, size)
         }
     })()
 })
@@ -78,9 +78,9 @@ Reverse.prototype.next = cadence(function (step, condition) {
         }
     }, function () {
         this._cursor.get(this._index--, step())
-    }, function (record, key) {
+    }, function (record, key, size) {
         if (condition(key, record)) {
-            step(null, record, key)
+            step(null, record, key, size)
         }
     })()
 })
