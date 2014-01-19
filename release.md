@@ -6,5 +6,6 @@ records.
 
 ### Issue by Issue
 
+ * Upgrade Cadence to 0.0.33. #30.
  * Upgrade Proof to 0.0.41. #31.
  * Test keys returned by iterator. #28.
