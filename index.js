@@ -18,12 +18,8 @@ Forward.prototype.next = cadence(function (step, condition) {
             return more
         })
     }, function (more) {
-        if (!more) {
-            this.terminated = true
-            step(null)
-        } else {
-            this._cursor.get(this._index++, step())
-        }
+        if (more) this._cursor.get(this._index++, step())
+        else step(null)
     }, function (record, key, size) {
         if (condition(key)) {
             step(null, record, key, size)
