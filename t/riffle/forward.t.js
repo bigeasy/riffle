@@ -26,7 +26,7 @@ require('./proof')(4, function (step, serialize, deepEqual, Strata, tmp) {
         }, function () {
             iterator.unlock()
         }, function () {
-            step(null, records, keys, sizes)
+            return [ records, keys, sizes ]
         })
     }, function (records, keys, sizes) {
         deepEqual(records, [ 'b', 'c', 'd', 'f', 'g', 'h', 'i' ], 'keyed records')
@@ -46,7 +46,7 @@ require('./proof')(4, function (step, serialize, deepEqual, Strata, tmp) {
         }, function () {
             iterator.unlock()
         }, function () {
-            return records
+            return [ records ]
         })
     }, function (records) {
         deepEqual(records, [ 'a', 'b', 'c', 'd', 'f', 'g', 'h', 'i' ], 'left most')
