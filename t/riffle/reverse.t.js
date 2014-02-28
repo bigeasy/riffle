@@ -1,5 +1,6 @@
-require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp, cadence) {
-    var strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 }),
+require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp) {
+    var cadence = require('cadence'),
+        strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 }),
         riffle = require('../..')
     step(function () {
         serialize(__dirname + '/fixtures/nine.json', tmp, step())
