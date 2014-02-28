@@ -9,6 +9,7 @@ elements used as a parameter.
 
 ### Issue by Issue
 
+ * Upgrade Cadence to 0.0.36. #41.
  * Remove "url" from `package.json`. #38.
  * Upgrade Proof to 0.0.42. #37.
  * Upgrade Cadence to 0.0.35. #36.
