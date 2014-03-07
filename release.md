@@ -9,6 +9,7 @@ elements used as a parameter.
 
 ### Issue by Issue
 
+ * Upgrade Strata to 0.0.17. #44.
  * Upgrade Proof to 0.0.44. #43.
  * Do not use Cadence exposed by Proof. #42.
  * Upgrade Cadence to 0.0.36. #41.
