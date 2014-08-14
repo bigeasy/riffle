@@ -24,7 +24,7 @@ require('./proof')(4, function (step, serialize, deepEqual, Strata, tmp) {
                 }
             })()
         }, function () {
-            iterator.unlock()
+            iterator.unlock(step())
         }, function () {
             return [ records, keys, sizes ]
         })
@@ -44,7 +44,7 @@ require('./proof')(4, function (step, serialize, deepEqual, Strata, tmp) {
                 else step(null, records)
             })()
         }, function () {
-            iterator.unlock()
+            iterator.unlock(step())
         }, function () {
             return [ records ]
         })

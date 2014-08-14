@@ -9,7 +9,7 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
         step(function () {
             mutator.insert('m', 'm', ~mutator.index, step())
         }, function () {
-            mutator.unlock()
+            mutator.unlock(step())
         })
     }, function () {
         riffle.forward(strata, 'm', step())
@@ -21,7 +21,7 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
             iterator.next(step())
         }, function (record) {
             ok(record == null, 'forward keyed single equal done')
-            iterator.unlock()
+            iterator.unlock(step())
         })
     }, function () {
         riffle.forward(strata, 'a', step())
@@ -33,7 +33,7 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
             iterator.next(step())
         }, function (record) {
             ok(record == null, 'forward keyed single less than done')
-            iterator.unlock()
+            iterator.unlock(step())
         })
     }, function () {
         riffle.forward(strata, 'z', step())
@@ -42,7 +42,7 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
             iterator.next(step())
         }, function (record) {
             ok(record == null, 'forward keyed single greater than done')
-            iterator.unlock()
+            iterator.unlock(step())
         })
     }, function () {
         riffle.reverse(strata, 'm', step())
@@ -54,7 +54,7 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
             iterator.next(step())
         }, function (record) {
             ok(record == null, 'reverse keyed single equal done')
-            iterator.unlock()
+            iterator.unlock(step())
         })
     }, function () {
         riffle.reverse(strata, 'z', step())
@@ -66,7 +66,7 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
             iterator.next(step())
         }, function (record) {
             ok(record == null, 'reverse keyed single greater than done')
-            iterator.unlock()
+            iterator.unlock(step())
         })
     }, function () {
         riffle.reverse(strata, 'a', step())
@@ -75,7 +75,7 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
             iterator.next(step())
         }, function (record) {
             ok(record == null, 'reverse keyed single less than done')
-            iterator.unlock()
+            iterator.unlock(step())
         })
     }, function () {
         strata.close(step())

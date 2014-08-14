@@ -25,7 +25,7 @@ require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp) {
                 }
             })()
         }, function () {
-            iterator.unlock()
+            iterator.unlock(step())
         }, function () {
             return [ records, keys, sizes ]
         })
@@ -45,7 +45,7 @@ require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp) {
                 else step(null, records)
             })()
         }, function () {
-            iterator.unlock()
+            iterator.unlock(step())
         }, function () {
             return [ records ]
         })
@@ -63,7 +63,7 @@ require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp) {
                 else step(null, records)
             })()
         }, function () {
-            iterator.unlock()
+            iterator.unlock(step())
         }, function () {
             return [ records ]
         })
@@ -77,7 +77,7 @@ require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp) {
                 step(function () {
                     cursor.remove(cursor.index, step())
                 }, function () {
-                    cursor.unlock()
+                    cursor.unlock(step())
                     strata.balance(step())
                 })
             })
@@ -93,7 +93,7 @@ require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp) {
                 else step(null, records)
             })()
         }, function () {
-            iterator.unlock()
+            iterator.unlock(step())
         }, function () {
             return [ records ]
         })

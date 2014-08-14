@@ -27,8 +27,8 @@ Forward.prototype.next = cadence(function (step, condition) {
     })()
 })
 
-Forward.prototype.unlock = function () {
-    this._cursor.unlock()
+Forward.prototype.unlock = function (callback) {
+    this._cursor.unlock(callback)
 }
 
 exports.forward = cadence(function (step, strata, key) {
@@ -56,8 +56,9 @@ Reverse.prototype.next = cadence(function (step, condition) {
                 step(function () {
                     this._cursor.get(0, step())
                 }, function (key) {
-                    this._cursor.unlock()
                     step(function () {
+                        this._cursor.unlock(step())
+                    }, function () {
                         exports._racer(key, step())
                     }, function () {
                         this._strata.iterator(this._strata.leftOf(key), step())
@@ -81,8 +82,8 @@ Reverse.prototype.next = cadence(function (step, condition) {
     })()
 })
 
-Reverse.prototype.unlock = function () {
-    this._cursor.unlock()
+Reverse.prototype.unlock = function (callback) {
+    this._cursor.unlock(callback)
 }
 
 exports.reverse = cadence(function (step, strata, key) {

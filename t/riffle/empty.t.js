@@ -10,7 +10,7 @@ require('./proof')(4, function (step, ok, Strata, tmp) {
             iterator.next(step())
         }, function (record) {
             ok(record == null, 'forward keyed empty')
-            iterator.unlock()
+            iterator.unlock(step())
         })
     }, function () {
         riffle.forward(strata, step())
@@ -19,7 +19,7 @@ require('./proof')(4, function (step, ok, Strata, tmp) {
             iterator.next(step())
         }, function (record) {
             ok(record == null, 'forward left most empty')
-            iterator.unlock()
+            iterator.unlock(step())
         })
     }, function () {
         riffle.reverse(strata, 'a', step())
@@ -28,7 +28,7 @@ require('./proof')(4, function (step, ok, Strata, tmp) {
             iterator.next(step())
         }, function (record) {
             ok(record == null, 'reverse keyed empty')
-            iterator.unlock()
+            iterator.unlock(step())
         })
     }, function () {
         riffle.reverse(strata, step())
@@ -37,7 +37,7 @@ require('./proof')(4, function (step, ok, Strata, tmp) {
             iterator.next(step())
         }, function (record) {
             ok(record == null, 'reverse left most empty')
-            iterator.unlock()
+            iterator.unlock(step())
         })
     }, function () {
         strata.close(step())
