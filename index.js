@@ -19,10 +19,10 @@ Forward.prototype.next = cadence(function (step, condition) {
         })
     }, function (more) {
         if (more) this._cursor.get(this._index++, step())
-        else step(null)
+        else return [ step ]
     }, function (record, key, size) {
         if (condition(key)) {
-            step(null, record, key, size)
+            return [ step, record, key, size ]
         }
     })()
 })
@@ -50,7 +50,7 @@ Reverse.prototype.next = cadence(function (step, condition) {
     condition = condition || yes
     step(function () {
         if (this._index == this._cursor.ghosts - 1) {
-            if (this._cursor.address == 1) step(null)
+            if (this._cursor.address == 1) return [ step ]
             else step(function () {
                 var address = this._cursor.address
                 step(function () {
@@ -77,7 +77,7 @@ Reverse.prototype.next = cadence(function (step, condition) {
         this._cursor.get(this._index--, step())
     }, function (record, key, size) {
         if (condition(key, record)) {
-            step(null, record, key, size)
+            return [ step, record, key, size ]
         }
     })()
 })
