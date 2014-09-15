@@ -9,6 +9,7 @@ elements used as a parameter.
 
 ### Issue by Issue
 
+ * Upgrade Proof to 0.0.48. #50.
  * Upgrade Cadence to 0.0.40. #48.
  * Upgrade Strata to 0.0.23. #47.
  * Upgrade Proof to 0.0.47. #46.
