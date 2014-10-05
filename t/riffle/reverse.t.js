@@ -1,4 +1,4 @@
-require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp) {
+require('./proof')(6, function (step, assert) {
     var cadence = require('cadence'),
         strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 }),
         riffle = require('../..')
@@ -30,9 +30,9 @@ require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp) {
             return [ records, keys, sizes ]
         })
     }, function (records, keys, sizes) {
-        deepEqual(records, [ 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'keyed records past end')
-        deepEqual(keys, [ 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'keyed keys past end')
-        deepEqual(sizes, [ 54, 54, 54, 54, 54, 54, 54 ], 'keyed sizes past end')
+        assert(records, [ 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'keyed records past end')
+        assert(keys, [ 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'keyed keys past end')
+        assert(sizes, [ 54, 54, 54, 54, 54, 54, 54 ], 'keyed sizes past end')
     }, function () {
         riffle.reverse(strata, step())
     }, function (iterator) {
@@ -50,7 +50,7 @@ require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp) {
             return [ records ]
         })
     }, function (records) {
-        deepEqual(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'right most')
+        assert(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'right most')
     }, function () {
         riffle.reverse(strata, 'e', step())
     }, function (iterator) {
@@ -68,7 +68,7 @@ require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp) {
             return [ records ]
         })
     }, function (records) {
-        deepEqual(records, [ 'd', 'c', 'b', 'a' ], 'keyed missing')
+        assert(records, [ 'd', 'c', 'b', 'a' ], 'keyed missing')
     }, function () {
         riffle._racer = cadence(function (step, key) {
             if (key == 'h') step(function () {
@@ -98,7 +98,7 @@ require('./proof')(6, function (step, serialize, deepEqual, Strata, tmp) {
             return [ records ]
         })
     }, function (records) {
-        deepEqual(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'balanced')
+        assert(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'balanced')
     }, function () {
         strata.close(step())
     })

@@ -1,4 +1,4 @@
-require('./proof')(10, function (step, equal, ok, Strata, tmp) {
+require('./proof')(10, function (step, assert) {
     var strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 })
     var riffle = require('../..')
     step(function () {
@@ -17,10 +17,10 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
         step(function () {
             iterator.next(step())
         }, function (record) {
-            equal(record, 'm', 'forward keyed single equal')
+            assert(record, 'm', 'forward keyed single equal')
             iterator.next(step())
         }, function (record) {
-            ok(record == null, 'forward keyed single equal done')
+            assert(record == null, 'forward keyed single equal done')
             iterator.unlock(step())
         })
     }, function () {
@@ -29,10 +29,10 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
         step(function () {
             iterator.next(step())
         }, function (record) {
-            equal(record, 'm', 'forward keyed single less than')
+            assert(record, 'm', 'forward keyed single less than')
             iterator.next(step())
         }, function (record) {
-            ok(record == null, 'forward keyed single less than done')
+            assert(record == null, 'forward keyed single less than done')
             iterator.unlock(step())
         })
     }, function () {
@@ -41,7 +41,7 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
         step(function () {
             iterator.next(step())
         }, function (record) {
-            ok(record == null, 'forward keyed single greater than done')
+            assert(record == null, 'forward keyed single greater than done')
             iterator.unlock(step())
         })
     }, function () {
@@ -50,10 +50,10 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
         step(function () {
             iterator.next(step())
         }, function (record) {
-            equal(record, 'm', 'reverse keyed single equal')
+            assert(record, 'm', 'reverse keyed single equal')
             iterator.next(step())
         }, function (record) {
-            ok(record == null, 'reverse keyed single equal done')
+            assert(record == null, 'reverse keyed single equal done')
             iterator.unlock(step())
         })
     }, function () {
@@ -62,10 +62,10 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
         step(function () {
             iterator.next(step())
         }, function (record) {
-            equal(record, 'm', 'reverse keyed single greater than')
+            assert(record, 'm', 'reverse keyed single greater than')
             iterator.next(step())
         }, function (record) {
-            ok(record == null, 'reverse keyed single greater than done')
+            assert(record == null, 'reverse keyed single greater than done')
             iterator.unlock(step())
         })
     }, function () {
@@ -74,7 +74,7 @@ require('./proof')(10, function (step, equal, ok, Strata, tmp) {
         step(function () {
             iterator.next(step())
         }, function (record) {
-            ok(record == null, 'reverse keyed single less than done')
+            assert(record == null, 'reverse keyed single less than done')
             iterator.unlock(step())
         })
     }, function () {

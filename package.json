@@ -27,8 +27,8 @@
     },
     "devDependencies":
     {
-                        "proof":              "0.0.48",
-                        "b-tree":             "0.0.27"
+                        "proof":              "0.0.50",
+                        "b-tree":             "0.0.28"
     },
     "scripts":
     {

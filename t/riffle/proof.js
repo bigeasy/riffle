@@ -1,1 +1,1 @@
-module.exports = require('b-tree/t/proof') (__dirname)
+require('b-tree/t/proof') (module, __dirname)

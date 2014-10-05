@@ -1,4 +1,4 @@
-require('./proof')(4, function (step, ok, Strata, tmp) {
+require('./proof')(4, function (step, assert) {
     var strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 })
     var riffle = require('../..')
     step(function () {
@@ -9,7 +9,7 @@ require('./proof')(4, function (step, ok, Strata, tmp) {
         step(function () {
             iterator.next(step())
         }, function (record) {
-            ok(record == null, 'forward keyed empty')
+            assert(record == null, 'forward keyed empty')
             iterator.unlock(step())
         })
     }, function () {
@@ -18,7 +18,7 @@ require('./proof')(4, function (step, ok, Strata, tmp) {
         step(function () {
             iterator.next(step())
         }, function (record) {
-            ok(record == null, 'forward left most empty')
+            assert(record == null, 'forward left most empty')
             iterator.unlock(step())
         })
     }, function () {
@@ -27,7 +27,7 @@ require('./proof')(4, function (step, ok, Strata, tmp) {
         step(function () {
             iterator.next(step())
         }, function (record) {
-            ok(record == null, 'reverse keyed empty')
+            assert(record == null, 'reverse keyed empty')
             iterator.unlock(step())
         })
     }, function () {
@@ -36,7 +36,7 @@ require('./proof')(4, function (step, ok, Strata, tmp) {
         step(function () {
             iterator.next(step())
         }, function (record) {
-            ok(record == null, 'reverse left most empty')
+            assert(record == null, 'reverse left most empty')
             iterator.unlock(step())
         })
     }, function () {
