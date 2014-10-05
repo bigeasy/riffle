@@ -1,3 +1,8 @@
+### Upgrade Proof
+
+Proof has a new scaffold. The Riffle tests were updated for the new scaffold. Because the Riffle tests use a scaffold wrapper from the Strata project, Strata was upgraded at the same time to get the updated scaffold wrapper.
+
 ### Issue by Issue
 
+ * Upgrade Strata to 0.0.28. #60.
  * Upgrade Proof to 0.0.50. #59.
