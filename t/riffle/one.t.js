@@ -1,4 +1,6 @@
-require('./proof')(10, function (async, assert) {
+require('./proof')(10, prove)
+
+function prove (async, assert) {
     var strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 })
     var riffle = require('../..')
     async(function () {
@@ -80,4 +82,4 @@ require('./proof')(10, function (async, assert) {
     }, function () {
         strata.close(async())
     })
-})
+}

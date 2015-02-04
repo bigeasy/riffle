@@ -1,4 +1,6 @@
-require('./proof')(6, function (async, assert) {
+require('./proof')(6, prove)
+
+function prove (async, assert) {
     var cadence = require('cadence'),
         strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 }),
         riffle = require('../..')
@@ -102,4 +104,4 @@ require('./proof')(6, function (async, assert) {
     }, function () {
         strata.close(async())
     })
-})
+}
