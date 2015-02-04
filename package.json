@@ -29,7 +29,8 @@
     "devDependencies":
     {
                         "proof":              "0.0.50",
-                        "b-tree":             "0.0.28"
+                        "rimraf":             "~2.2",
+                        "b-tree":             "0.0.30"
     },
     "scripts":
     {

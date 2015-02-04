@@ -13,7 +13,7 @@ function prove (async, assert) {
         var records = [], keys = [], sizes = []
         async(function () {
             var count = 0
-            async(function () {
+            var loop = async(function () {
                 if (count % 1) iterator.next(async())
                 else iterator.next(function (record) { return count++ > 0 },
                 async())
@@ -23,7 +23,7 @@ function prove (async, assert) {
                     keys.push(key)
                     sizes.push(size)
                 } else {
-                    return [ async, records ]
+                    return [ loop, records ]
                 }
             })()
         }, function () {
@@ -40,11 +40,11 @@ function prove (async, assert) {
     }, function (iterator) {
         var records = []
         async(function () {
-            async(function () {
+            var loop = async(function () {
                 iterator.next(async())
             }, function (record) {
                 if (record) records.push(record)
-                else return [ async, records ]
+                else return [ loop, records ]
             })()
         }, function () {
             iterator.unlock(async())
