@@ -1,45 +1,45 @@
-require('./proof')(4, function (step, assert) {
+require('./proof')(4, function (async, assert) {
     var strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 })
     var riffle = require('../..')
-    step(function () {
-        strata.create(step())
+    async(function () {
+        strata.create(async())
     }, function () {
-        riffle.forward(strata, 'a', step())
+        riffle.forward(strata, 'a', async())
     }, function (iterator) {
-        step(function () {
-            iterator.next(step())
+        async(function () {
+            iterator.next(async())
         }, function (record) {
             assert(record == null, 'forward keyed empty')
-            iterator.unlock(step())
+            iterator.unlock(async())
         })
     }, function () {
-        riffle.forward(strata, step())
+        riffle.forward(strata, async())
     }, function (iterator) {
-        step(function () {
-            iterator.next(step())
+        async(function () {
+            iterator.next(async())
         }, function (record) {
             assert(record == null, 'forward left most empty')
-            iterator.unlock(step())
+            iterator.unlock(async())
         })
     }, function () {
-        riffle.reverse(strata, 'a', step())
+        riffle.reverse(strata, 'a', async())
     }, function (iterator) {
-        step(function () {
-            iterator.next(step())
+        async(function () {
+            iterator.next(async())
         }, function (record) {
             assert(record == null, 'reverse keyed empty')
-            iterator.unlock(step())
+            iterator.unlock(async())
         })
     }, function () {
-        riffle.reverse(strata, step())
+        riffle.reverse(strata, async())
     }, function (iterator) {
-        step(function () {
-            iterator.next(step())
+        async(function () {
+            iterator.next(async())
         }, function (record) {
             assert(record == null, 'reverse left most empty')
-            iterator.unlock(step())
+            iterator.unlock(async())
         })
     }, function () {
-        strata.close(step())
+        strata.close(async())
     })
 })

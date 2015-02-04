@@ -4,5 +4,6 @@ Proof has a new scaffold. The Riffle tests were updated for the new scaffold. Be
 
 ### Issue by Issue
 
+ * Rename `step` to `async`. #63.
  * Rename main module to `riffle.js`. #62.
  * Upgrade Strata to 0.0.28. #60.

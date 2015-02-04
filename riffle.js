@@ -7,22 +7,22 @@ function Forward (cursor) {
     this._index = cursor.offset
 }
 
-Forward.prototype.next = cadence(function (step, condition) {
+Forward.prototype.next = cadence(function (async, condition) {
     condition = condition || yes
-    step(function () {
+    async(function () {
         if (this._index < this._cursor.length) return true
-        else step(function () {
-            this._cursor.next(step())
+        else async(function () {
+            this._cursor.next(async())
         }, function (more) {
             this._index = this._cursor.offset
             return more
         })
     }, function (more) {
-        if (more) this._cursor.get(this._index++, step())
-        else return [ step ]
+        if (more) this._cursor.get(this._index++, async())
+        else return [ async ]
     }, function (record, key, size) {
         if (condition(key)) {
-            return [ step, record, key, size ]
+            return [ async, record, key, size ]
         }
     })()
 })
@@ -31,10 +31,10 @@ Forward.prototype.unlock = function (callback) {
     this._cursor.unlock(callback)
 }
 
-exports.forward = cadence(function (step, strata, key) {
+exports.forward = cadence(function (async, strata, key) {
     var condition = key == null ? strata.left : strata.key(key)
-    step(function () {
-        strata.iterator(condition, step())
+    async(function () {
+        strata.iterator(condition, async())
     }, function (cursor) {
         return new Forward(cursor)
     })
@@ -46,22 +46,22 @@ function Reverse (strata, cursor) {
     this._index = cursor.index < 0 ? ~cursor.index - 1 : cursor.index
 }
 
-Reverse.prototype.next = cadence(function (step, condition) {
+Reverse.prototype.next = cadence(function (async, condition) {
     condition = condition || yes
-    step(function () {
+    async(function () {
         if (this._index == this._cursor.ghosts - 1) {
-            if (this._cursor.address == 1) return [ step ]
-            else step(function () {
+            if (this._cursor.address == 1) return [ async ]
+            else async(function () {
                 var address = this._cursor.address
-                step(function () {
-                    this._cursor.get(0, step())
+                async(function () {
+                    this._cursor.get(0, async())
                 }, function (key) {
-                    step(function () {
-                        this._cursor.unlock(step())
+                    async(function () {
+                        this._cursor.unlock(async())
                     }, function () {
-                        exports._racer(key, step())
+                        exports._racer(key, async())
                     }, function () {
-                        this._strata.iterator(this._strata.leftOf(key), step())
+                        this._strata.iterator(this._strata.leftOf(key), async())
                     })
                 }, function (cursor) {
                     this._cursor = cursor
@@ -74,10 +74,10 @@ Reverse.prototype.next = cadence(function (step, condition) {
             })
         }
     }, function () {
-        this._cursor.get(this._index--, step())
+        this._cursor.get(this._index--, async())
     }, function (record, key, size) {
         if (condition(key, record)) {
-            return [ step, record, key, size ]
+            return [ async, record, key, size ]
         }
     })()
 })
@@ -86,10 +86,10 @@ Reverse.prototype.unlock = function (callback) {
     this._cursor.unlock(callback)
 }
 
-exports.reverse = cadence(function (step, strata, key) {
+exports.reverse = cadence(function (async, strata, key) {
     var condition = key == null ? strata.right : strata.key(key)
-    step(function () {
-        strata.iterator(condition, step())
+    async(function () {
+        strata.iterator(condition, async())
     }, function (cursor) {
         return new Reverse(strata, cursor)
     })

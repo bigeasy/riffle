@@ -1,83 +1,83 @@
-require('./proof')(10, function (step, assert) {
+require('./proof')(10, function (async, assert) {
     var strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 })
     var riffle = require('../..')
-    step(function () {
-        strata.create(step())
+    async(function () {
+        strata.create(async())
     }, function () {
-        strata.mutator('m', step())
+        strata.mutator('m', async())
     }, function (mutator) {
-        step(function () {
-            mutator.insert('m', 'm', ~mutator.index, step())
+        async(function () {
+            mutator.insert('m', 'm', ~mutator.index, async())
         }, function () {
-            mutator.unlock(step())
+            mutator.unlock(async())
         })
     }, function () {
-        riffle.forward(strata, 'm', step())
+        riffle.forward(strata, 'm', async())
     }, function (iterator) {
-        step(function () {
-            iterator.next(step())
+        async(function () {
+            iterator.next(async())
         }, function (record) {
             assert(record, 'm', 'forward keyed single equal')
-            iterator.next(step())
+            iterator.next(async())
         }, function (record) {
             assert(record == null, 'forward keyed single equal done')
-            iterator.unlock(step())
+            iterator.unlock(async())
         })
     }, function () {
-        riffle.forward(strata, 'a', step())
+        riffle.forward(strata, 'a', async())
     }, function (iterator) {
-        step(function () {
-            iterator.next(step())
+        async(function () {
+            iterator.next(async())
         }, function (record) {
             assert(record, 'm', 'forward keyed single less than')
-            iterator.next(step())
+            iterator.next(async())
         }, function (record) {
             assert(record == null, 'forward keyed single less than done')
-            iterator.unlock(step())
+            iterator.unlock(async())
         })
     }, function () {
-        riffle.forward(strata, 'z', step())
+        riffle.forward(strata, 'z', async())
     }, function (iterator) {
-        step(function () {
-            iterator.next(step())
+        async(function () {
+            iterator.next(async())
         }, function (record) {
             assert(record == null, 'forward keyed single greater than done')
-            iterator.unlock(step())
+            iterator.unlock(async())
         })
     }, function () {
-        riffle.reverse(strata, 'm', step())
+        riffle.reverse(strata, 'm', async())
     }, function (iterator) {
-        step(function () {
-            iterator.next(step())
+        async(function () {
+            iterator.next(async())
         }, function (record) {
             assert(record, 'm', 'reverse keyed single equal')
-            iterator.next(step())
+            iterator.next(async())
         }, function (record) {
             assert(record == null, 'reverse keyed single equal done')
-            iterator.unlock(step())
+            iterator.unlock(async())
         })
     }, function () {
-        riffle.reverse(strata, 'z', step())
+        riffle.reverse(strata, 'z', async())
     }, function (iterator) {
-        step(function () {
-            iterator.next(step())
+        async(function () {
+            iterator.next(async())
         }, function (record) {
             assert(record, 'm', 'reverse keyed single greater than')
-            iterator.next(step())
+            iterator.next(async())
         }, function (record) {
             assert(record == null, 'reverse keyed single greater than done')
-            iterator.unlock(step())
+            iterator.unlock(async())
         })
     }, function () {
-        riffle.reverse(strata, 'a', step())
+        riffle.reverse(strata, 'a', async())
     }, function (iterator) {
-        step(function () {
-            iterator.next(step())
+        async(function () {
+            iterator.next(async())
         }, function (record) {
             assert(record == null, 'reverse keyed single less than done')
-            iterator.unlock(step())
+            iterator.unlock(async())
         })
     }, function () {
-        strata.close(step())
+        strata.close(async())
     })
 })

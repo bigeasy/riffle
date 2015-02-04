@@ -1,31 +1,31 @@
-require('./proof')(6, function (step, assert) {
+require('./proof')(6, function (async, assert) {
     var cadence = require('cadence'),
         strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 }),
         riffle = require('../..')
-    step(function () {
-        serialize(__dirname + '/fixtures/nine.json', tmp, step())
+    async(function () {
+        serialize(__dirname + '/fixtures/nine.json', tmp, async())
     }, function () {
-        strata.open(step())
+        strata.open(async())
     }, function () {
-        riffle.reverse(strata, 'z', step())
+        riffle.reverse(strata, 'z', async())
     }, function (iterator) {
         var records = [], keys = [], sizes = []
-        step(function () {
+        async(function () {
             var count = 0
-            step(function () {
-                if (count % 1) iterator.next(step())
-                else iterator.next(function (record) { return count++ > 0 }, step())
+            async(function () {
+                if (count % 1) iterator.next(async())
+                else iterator.next(function (record) { return count++ > 0 }, async())
             }, function (record, key, size) {
                 if (record && key) {
                     records.push(record)
                     keys.push(key)
                     sizes.push(size)
                 } else {
-                    return [ step, records ]
+                    return [ async, records ]
                 }
             })()
         }, function () {
-            iterator.unlock(step())
+            iterator.unlock(async())
         }, function () {
             return [ records, keys, sizes ]
         })
@@ -34,72 +34,72 @@ require('./proof')(6, function (step, assert) {
         assert(keys, [ 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'keyed keys past end')
         assert(sizes, [ 54, 54, 54, 54, 54, 54, 54 ], 'keyed sizes past end')
     }, function () {
-        riffle.reverse(strata, step())
+        riffle.reverse(strata, async())
     }, function (iterator) {
         var records = []
-        step(function () {
-            step(function () {
-                iterator.next(step())
+        async(function () {
+            async(function () {
+                iterator.next(async())
             }, function (record) {
                 if (record) records.push(record)
-                else return [ step, records ]
+                else return [ async, records ]
             })()
         }, function () {
-            iterator.unlock(step())
+            iterator.unlock(async())
         }, function () {
             return [ records ]
         })
     }, function (records) {
         assert(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'right most')
     }, function () {
-        riffle.reverse(strata, 'e', step())
+        riffle.reverse(strata, 'e', async())
     }, function (iterator) {
         var records = []
-        step(function () {
-            step(function () {
-                iterator.next(step())
+        async(function () {
+            async(function () {
+                iterator.next(async())
             }, function (record) {
                 if (record) records.push(record)
-                else return [ step, records ]
+                else return [ async, records ]
             })()
         }, function () {
-            iterator.unlock(step())
+            iterator.unlock(async())
         }, function () {
             return [ records ]
         })
     }, function (records) {
         assert(records, [ 'd', 'c', 'b', 'a' ], 'keyed missing')
     }, function () {
-        riffle._racer = cadence(function (step, key) {
-            if (key == 'h') step(function () {
-                strata.mutator('h', step())
+        riffle._racer = cadence(function (async, key) {
+            if (key == 'h') async(function () {
+                strata.mutator('h', async())
             }, function (cursor) {
-                step(function () {
-                    cursor.remove(cursor.index, step())
+                async(function () {
+                    cursor.remove(cursor.index, async())
                 }, function () {
-                    cursor.unlock(step())
-                    strata.balance(step())
+                    cursor.unlock(async())
+                    strata.balance(async())
                 })
             })
         })
-        riffle.reverse(strata, step())
+        riffle.reverse(strata, async())
     }, function (iterator) {
         var records = []
-        step(function () {
-            step(function () {
-                iterator.next(step())
+        async(function () {
+            async(function () {
+                iterator.next(async())
             }, function (record) {
                 if (record) records.push(record)
-                else return [ step, records ]
+                else return [ async, records ]
             })()
         }, function () {
-            iterator.unlock(step())
+            iterator.unlock(async())
         }, function () {
             return [ records ]
         })
     }, function (records) {
         assert(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'balanced')
     }, function () {
-        strata.close(step())
+        strata.close(async())
     })
 })
