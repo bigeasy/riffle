@@ -1,4 +1,4 @@
-var cadence = require('cadence')
+var cadence = require('cadence/redux')
 
 function yes () { return true }
 
@@ -9,7 +9,7 @@ function Forward (cursor) {
 
 Forward.prototype.next = cadence(function (async, condition) {
     condition = condition || yes
-    async(function () {
+    var loop = async(function () {
         if (this._index < this._cursor.length) return true
         else async(function () {
             this._cursor.next(async())
@@ -19,10 +19,10 @@ Forward.prototype.next = cadence(function (async, condition) {
         })
     }, function (more) {
         if (more) this._cursor.get(this._index++, async())
-        else return [ async ]
+        else return [ loop ]
     }, function (record, key, size) {
         if (condition(key)) {
-            return [ async, record, key, size ]
+            return [ loop, record, key, size ]
         }
     })()
 })
@@ -48,9 +48,9 @@ function Reverse (strata, cursor) {
 
 Reverse.prototype.next = cadence(function (async, condition) {
     condition = condition || yes
-    async(function () {
+    var loop = async(function () {
         if (this._index == this._cursor.ghosts - 1) {
-            if (this._cursor.address == 1) return [ async ]
+            if (this._cursor.address == 1) return [ loop ]
             else async(function () {
                 var address = this._cursor.address
                 async(function () {
@@ -77,7 +77,7 @@ Reverse.prototype.next = cadence(function (async, condition) {
         this._cursor.get(this._index--, async())
     }, function (record, key, size) {
         if (condition(key, record)) {
-            return [ async, record, key, size ]
+            return [ loop, record, key, size ]
         }
     })()
 })
