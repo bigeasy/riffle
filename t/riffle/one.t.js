@@ -18,11 +18,11 @@ function prove (async, assert) {
     }, function (iterator) {
         async(function () {
             iterator.next(async())
-        }, function (record) {
-            assert(record, 'm', 'forward keyed single equal')
+        }, function (items) {
+            assert(items, [{ key: 'm', record: 'm', heft: 54 }], 'forward keyed single equal')
             iterator.next(async())
-        }, function (record) {
-            assert(record == null, 'forward keyed single equal done')
+        }, function (items) {
+            assert(items == null, 'forward keyed single equal done')
             iterator.unlock(async())
         })
     }, function () {
@@ -30,11 +30,11 @@ function prove (async, assert) {
     }, function (iterator) {
         async(function () {
             iterator.next(async())
-        }, function (record) {
-            assert(record, 'm', 'forward keyed single less than')
+        }, function (items) {
+            assert(items, [{ key: 'm', record: 'm', heft: 54 }], 'forward keyed single less than')
             iterator.next(async())
-        }, function (record) {
-            assert(record == null, 'forward keyed single less than done')
+        }, function (items) {
+            assert(items == null, 'forward keyed single less than done')
             iterator.unlock(async())
         })
     }, function () {
@@ -42,8 +42,8 @@ function prove (async, assert) {
     }, function (iterator) {
         async(function () {
             iterator.next(async())
-        }, function (record) {
-            assert(record == null, 'forward keyed single greater than done')
+        }, function (items) {
+            assert(items == null, 'forward keyed single greater than done')
             iterator.unlock(async())
         })
     }, function () {
@@ -52,10 +52,10 @@ function prove (async, assert) {
         async(function () {
             iterator.next(async())
         }, function (record) {
-            assert(record, 'm', 'reverse keyed single equal')
+            assert(record, [{ key: 'm', record: 'm', heft: 54 }], 'reverse keyed single equal')
             iterator.next(async())
-        }, function (record) {
-            assert(record == null, 'reverse keyed single equal done')
+        }, function (items) {
+            assert(items == null, 'reverse keyed single equal done')
             iterator.unlock(async())
         })
     }, function () {
@@ -64,7 +64,7 @@ function prove (async, assert) {
         async(function () {
             iterator.next(async())
         }, function (record) {
-            assert(record, 'm', 'reverse keyed single greater than')
+            assert(record, [{ key: 'm', record: 'm', heft: 54 }], 'reverse keyed single greater than')
             iterator.next(async())
         }, function (record) {
             assert(record == null, 'reverse keyed single greater than done')

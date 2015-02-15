@@ -1,4 +1,4 @@
-require('./proof')(6, prove)
+require('./proof')(4, prove)
 
 function prove (async, assert) {
     var cadence = require('cadence'),
@@ -15,26 +15,19 @@ function prove (async, assert) {
         async(function () {
             var count = 0
             var loop = async(function () {
-                if (count % 1) iterator.next(async())
-                else iterator.next(function (record) { return count++ > 0 }, async())
-            }, function (record, key, size) {
-                if (record && key) {
-                    records.push(record)
-                    keys.push(key)
-                    sizes.push(size)
-                } else {
-                    return [ loop, records ]
+                iterator.next(function (item) { return item.key != 'g' }, async())
+            }, function (items) {
+                if (items == null) {
+                    return [ loop ]
                 }
+                items.forEach(function (item) {
+                    records.push(item.record)
+                })
             })()
         }, function () {
+            assert(records, [ 'i', 'h', 'f', 'd', 'c', 'b', 'a' ], 'keyed records past end')
             iterator.unlock(async())
-        }, function () {
-            return [ records, keys, sizes ]
         })
-    }, function (records, keys, sizes) {
-        assert(records, [ 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'keyed records past end')
-        assert(keys, [ 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'keyed keys past end')
-        assert(sizes, [ 54, 54, 54, 54, 54, 54, 54 ], 'keyed sizes past end')
     }, function () {
         riffle.reverse(strata, async())
     }, function (iterator) {
@@ -42,17 +35,18 @@ function prove (async, assert) {
         async(function () {
             var loop = async(function () {
                 iterator.next(async())
-            }, function (record) {
-                if (record) records.push(record)
-                else return [ loop, records ]
+            }, function (items) {
+                if (items == null) {
+                    return [ loop ]
+                }
+                items.forEach(function (item) {
+                    records.push(item.record)
+                })
             })()
         }, function () {
+            assert(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'right most')
             iterator.unlock(async())
-        }, function () {
-            return [ records ]
         })
-    }, function (records) {
-        assert(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'right most')
     }, function () {
         riffle.reverse(strata, 'e', async())
     }, function (iterator) {
@@ -60,17 +54,19 @@ function prove (async, assert) {
         async(function () {
             var loop = async(function () {
                 iterator.next(async())
-            }, function (record) {
-                if (record) records.push(record)
-                else return [ loop, records ]
+            }, function (items) {
+                if (items == null) {
+                    return [ loop ]
+                }
+                items.forEach(function (item) {
+                    records.push(item.record)
+                })
             })()
         }, function () {
+            assert(records, [ 'd', 'c', 'b', 'a' ], 'keyed missing')
             iterator.unlock(async())
-        }, function () {
-            return [ records ]
         })
     }, function (records) {
-        assert(records, [ 'd', 'c', 'b', 'a' ], 'keyed missing')
     }, function () {
         riffle._racer = cadence(function (async, key) {
             if (key == 'h') async(function () {
@@ -90,9 +86,13 @@ function prove (async, assert) {
         async(function () {
             var loop = async(function () {
                 iterator.next(async())
-            }, function (record) {
-                if (record) records.push(record)
-                else return [ loop, records ]
+            }, function (items) {
+                if (items == null) {
+                    return [ loop ]
+                }
+                items.forEach(function (item) {
+                    records.push(item.record)
+                })
             })()
         }, function () {
             iterator.unlock(async())
