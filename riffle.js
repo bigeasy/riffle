@@ -7,6 +7,7 @@ function Forward (cursor, inclusive) {
     index = index < 0 ? ~index : inclusive ? index : index + 1
     this._cursor = cursor
     this._index = index
+    this.terminal = false
 }
 
 Forward.prototype.next = cadence(function (async, condition) {
@@ -34,6 +35,9 @@ Forward.prototype.next = cadence(function (async, condition) {
         if (filtered.length === 0) {
             return [ loop() ]
         }
+        if (this._cursor._page.right.key == null) {
+            this.terminal = true
+        }
         return [ loop, filtered ]
     })()
 })
@@ -60,6 +64,7 @@ function Reverse (strata, cursor, inclusive) {
     if (!(index === -1 && cursor._page.address === 1)) {
         this._index = index
     }
+    this.terminal = false
 }
 
 Reverse.prototype.next = cadence(function (async, condition) {
@@ -102,6 +107,9 @@ Reverse.prototype.next = cadence(function (async, condition) {
         }
         if (filtered.length == 0) {
             return [ loop() ]
+        }
+        if (this._cursor._page.address === 1) {
+            this.terminal = true
         }
         return [ loop, filtered ]
     })()
