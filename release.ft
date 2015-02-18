@@ -4,6 +4,7 @@ Proof has a new scaffold. The Riffle tests were updated for the new scaffold. Be
 
 ### Issue by Issue
 
+ * Upgrade Cadence to 0.0.52. #74.
  * Add property to designate last iteration. #72.
  * Implement new by array interface. #70.
  * Update license dates. #68.
