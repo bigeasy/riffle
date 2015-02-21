@@ -10,8 +10,8 @@ function prove (async, assert) {
     }, function (iterator) {
         async(function () {
             iterator.next(async())
-        }, function (record) {
-            assert(record == null, 'forward keyed empty')
+        }, function (more) {
+            assert(!more, 'forward keyed empty')
             iterator.unlock(async())
         })
     }, function () {
@@ -19,8 +19,8 @@ function prove (async, assert) {
     }, function (iterator) {
         async(function () {
             iterator.next(async())
-        }, function (record) {
-            assert(record == null, 'forward left most empty')
+        }, function (more) {
+            assert(!more, 'forward left most empty')
             iterator.unlock(async())
         })
     }, function () {
@@ -28,8 +28,8 @@ function prove (async, assert) {
     }, function (iterator) {
         async(function () {
             iterator.next(async())
-        }, function (record) {
-            assert(record == null, 'reverse keyed empty')
+        }, function (more) {
+            assert(!more, 'reverse keyed empty')
             iterator.unlock(async())
         })
     }, function () {
@@ -37,8 +37,8 @@ function prove (async, assert) {
     }, function (iterator) {
         async(function () {
             iterator.next(async())
-        }, function (record) {
-            assert(record == null, 'reverse left most empty')
+        }, function (more) {
+            assert(!more, 'reverse left most empty')
             iterator.unlock(async())
         })
     }, function () {

@@ -1,45 +1,34 @@
 var cadence = require('cadence/redux')
 
-function yes () { return true }
-
 function Forward (cursor, inclusive) {
-    var index = cursor.index
-    index = index < 0 ? ~index : inclusive ? index : index + 1
     this._cursor = cursor
-    this._index = index
-    this.terminal = false
+    this.last = !! this._cursor._page.right
+    this._inclusive = inclusive
+    this._index = null
 }
 
-Forward.prototype.next = cadence(function (async, condition) {
-    condition = condition || yes
-    var filtered = [], loop = async(function () {
-        if (this._index != null) {
-            var index = this._index
-            this._index = null
-            return [ true, index ]
+Forward.prototype.get = function () {
+    return this._items[this._index++]
+}
+
+Forward.prototype.next = cadence(function (async) {
+    if (this._index === null) {
+        var index = this._cursor.index
+        this._index = index < 0 ? ~index : this._inclusive ? index : index + 1
+        this._items = this._cursor._page.items
+        return [ this._index < this._items.length ]
+    }
+    async(function () {
+        this._cursor.next(async())
+    }, function (more) {
+        if (!more) {
+            return [ false ]
         }
-        async(function () {
-            this._cursor.next(async())
-        }, function (more) {
-            return [ more, this._cursor.offset ]
-        })
-    }, function (more, i) {
-        if (!more) return [ loop, null ]
-        var items = this._cursor._page.items, filtered = []
-        for (var I = this._cursor.length; i < I; i++) {
-            var item = items[i]
-            if (condition(item)) {
-                filtered.push(item)
-            }
-        }
-        if (filtered.length === 0) {
-            return [ loop() ]
-        }
-        if (this._cursor._page.right.key == null) {
-            this.terminal = true
-        }
-        return [ loop, filtered ]
-    })()
+        this.last = this._cursor._page.right.address === null
+        this._items = this._cursor._page.items
+        this._index = this._cursor._page.ghosts
+        return [ true ]
+    })
 })
 
 Forward.prototype.unlock = function (callback) {
@@ -58,61 +47,54 @@ exports.forward = cadence(function (async, strata, key, inclusive) {
 
 function Reverse (strata, cursor, inclusive) {
     var index = cursor.index
-    index = index < 0 ? ~index - 1 : inclusive ? index : index - 1
     this._strata = strata
     this._cursor = cursor
-    if (!(index === -1 && cursor._page.address === 1)) {
-        this._index = index
-    }
-    this.terminal = false
+    this._index = null
+    this._inclusive = inclusive
+    this.last = false
 }
 
-Reverse.prototype.next = cadence(function (async, condition) {
-    condition = condition || yes
-    if (this._index == null && this._cursor.address == 1) {
-        return [ null ]
+Reverse.prototype.get = function () {
+    return this._items[this._index--]
+}
+
+Reverse.prototype.next = cadence(function (async) {
+    if (this._index !== null && this._cursor.address == 1) {
+        return [ false ]
     }
-    var loop = async(function () {
-        var address = this._cursor.address
-        if (this._index != null) {
-            var index = this._index
-            this._index = null
-            return [ index ]
+    if (this._index === null) {
+        var index = this._cursor.index
+        index = index < 0 ? ~index - 1 : this._inclusive ? index : index - 1
+        if (index < this._cursor._page.ghosts && this._cursor._page.address === 1) {
+            this._index = -1
+            return [ false ]
         }
+        this._items = this._cursor._page.items
+        this._index = index
+        return [ true ]
+    }
+    var address = this._cursor._page.address
+    async(function () {
+        var key = this._cursor.get(0).key
         async(function () {
-            var key = this._cursor.get(0).key
-            async(function () {
-                this._cursor.unlock(async())
-            }, function () {
-                exports._racer(key, async())
-            }, function () {
-                this._strata.iterator(this._strata.leftOf(key), async())
-            })
-        }, function (cursor) {
-            this._cursor = cursor
-            if (this._cursor.right === address) {
-                return [ this._cursor.length - 1 ]
-            } else {
-                var index = this._cursor.index
-                index = (index < 0 ? ~index : index) - 1
-                return [ index ]
-            }
+            this._cursor.unlock(async())
+        }, function () {
+            exports._racer(key, async())
+        }, function () {
+            this._strata.iterator(this._strata.leftOf(key), async())
         })
-    }, function (i) {
-        var cursor = this._cursor, item, filtered = []
-        for (var I = this._cursor.ghosts - 1; i != I; i--) {
-            if (condition(item = cursor.get(i))) {
-                filtered.push(item)
-            }
+    }, function (cursor) {
+        this.last = cursor._page.address === 1
+        this._cursor = cursor
+        this._items = cursor._page.items
+        if (this._cursor.right === address) {
+            this._index = this._cursor.length - 1
+        } else {
+            var index = this._cursor.index
+            this._index = (index < 0 ? ~index : index) - 1
         }
-        if (filtered.length == 0) {
-            return [ loop() ]
-        }
-        if (this._cursor._page.address === 1) {
-            this.terminal = true
-        }
-        return [ loop, filtered ]
-    })()
+        return [ true ]
+    })
 })
 
 Reverse.prototype.unlock = function (callback) {

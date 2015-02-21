@@ -16,16 +16,18 @@ function prove (async, assert) {
             var count = 0
             var loop = async(function () {
                 iterator.next(function (item) { return item.key != 'g' }, async())
-            }, function (items) {
-                if (items == null) {
+            }, function (more) {
+                if (more) {
+                    var item
+                    while (item = iterator.get()) {
+                        records.push(item.record)
+                    }
+                } else {
                     return [ loop ]
                 }
-                items.forEach(function (item) {
-                    records.push(item.record)
-                })
             })()
         }, function () {
-            assert(records, [ 'i', 'h', 'f', 'd', 'c', 'b', 'a' ], 'keyed records past end')
+            assert(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'keyed records past end')
             iterator.unlock(async())
         })
     }, function () {
@@ -35,13 +37,15 @@ function prove (async, assert) {
         async(function () {
             var loop = async(function () {
                 iterator.next(async())
-            }, function (items) {
-                if (items == null) {
+            }, function (more) {
+                if (more) {
+                    var item
+                    while (item = iterator.get()) {
+                        records.push(item.record)
+                    }
+                } else {
                     return [ loop ]
                 }
-                items.forEach(function (item) {
-                    records.push(item.record)
-                })
             })()
         }, function () {
             assert(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'right most')
@@ -54,13 +58,15 @@ function prove (async, assert) {
         async(function () {
             var loop = async(function () {
                 iterator.next(async())
-            }, function (items) {
-                if (items == null) {
+            }, function (more) {
+                if (more) {
+                    var item
+                    while (item = iterator.get()) {
+                        records.push(item.record)
+                    }
+                } else {
                     return [ loop ]
                 }
-                items.forEach(function (item) {
-                    records.push(item.record)
-                })
             })()
         }, function () {
             assert(records, [ 'd', 'c', 'b', 'a' ], 'keyed missing')
@@ -86,13 +92,15 @@ function prove (async, assert) {
         async(function () {
             var loop = async(function () {
                 iterator.next(async())
-            }, function (items) {
-                if (items == null) {
+            }, function (more) {
+                if (more) {
+                    var item
+                    while (item = iterator.get()) {
+                        records.push(item.record)
+                    }
+                } else {
                     return [ loop ]
                 }
-                items.forEach(function (item) {
-                    records.push(item.record)
-                })
             })()
         }, function () {
             iterator.unlock(async())
