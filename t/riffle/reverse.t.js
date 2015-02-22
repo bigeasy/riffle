@@ -1,4 +1,4 @@
-require('./proof')(5, prove)
+require('./proof')(6, prove)
 
 function prove (async, assert) {
     var cadence = require('cadence'),
