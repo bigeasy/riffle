@@ -102,12 +102,9 @@ function prove (async, assert) {
                 }
             })()
         }, function () {
+            assert(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'balanced')
             iterator.unlock(async())
-        }, function () {
-            return [ records ]
         })
-    }, function (records) {
-        assert(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'balanced')
     }, function () {
         strata.close(async())
     })
