@@ -2,7 +2,7 @@ var cadence = require('cadence/redux')
 
 function Forward (cursor, inclusive) {
     this._cursor = cursor
-    this.last = !! this._cursor._page.right
+    this.last = this._cursor._page.right.address == null
     this._inclusive = inclusive
     this._index = null
 }

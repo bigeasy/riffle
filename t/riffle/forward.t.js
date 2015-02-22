@@ -1,4 +1,4 @@
-require('./proof')(3, prove)
+require('./proof')(4, prove)
 
 function prove (async, assert) {
     var strata = createStrata({ directory: tmp, leafSize: 3, branchSize: 3 }),
@@ -10,12 +10,13 @@ function prove (async, assert) {
     }, function () {
         riffle.forward(strata, 'b', async())
     }, function (iterator) {
-        var records = []
+        var records = [], lasts = []
         async(function () {
             var loop = async(function () {
                 iterator.next(async())
             }, function (more) {
                 if (more) {
+                    lasts.push(iterator.last)
                     var item
                     while (item = iterator.get()) {
                         records.push(item.record)
@@ -25,6 +26,7 @@ function prove (async, assert) {
                 }
             })()
         }, function () {
+            assert(lasts, [ false, false, false, true ], 'last')
             assert(records, [ 'b', 'c', 'd', 'f', 'g', 'h', 'i' ], 'inclusive')
             iterator.unlock(async())
         })

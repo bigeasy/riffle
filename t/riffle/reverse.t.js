@@ -1,4 +1,4 @@
-require('./proof')(6, prove)
+require('./proof')(7, prove)
 
 function prove (async, assert) {
     var cadence = require('cadence'),
@@ -11,13 +11,14 @@ function prove (async, assert) {
     }, function () {
         riffle.reverse(strata, 'z', async())
     }, function (iterator) {
-        var records = [], keys = [], sizes = []
+        var records = [], lasts = []
         async(function () {
             var count = 0
             var loop = async(function () {
                 iterator.next(function (item) { return item.key != 'g' }, async())
             }, function (more) {
                 if (more) {
+                    lasts.push(iterator.last)
                     var item
                     while (item = iterator.get()) {
                         records.push(item.record)
@@ -27,6 +28,7 @@ function prove (async, assert) {
                 }
             })()
         }, function () {
+            assert(lasts, [ false, false, false, true ], 'last')
             assert(records, [ 'i', 'h', 'g', 'f', 'd', 'c', 'b', 'a' ], 'keyed records past end')
             iterator.unlock(async())
         })
