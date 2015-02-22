@@ -4,6 +4,7 @@ Proof has a new scaffold. The Riffle tests were updated for the new scaffold. Be
 
 ### Issue by Issue
 
+ * Upgrade Strata to 0.0.34. #79.
  * Implement new `get` interface. #77.
  * Upgrade Cadence to 0.0.52. #74.
  * Add property to designate last iteration. #72.

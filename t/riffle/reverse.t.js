@@ -2,7 +2,7 @@ require('./proof')(4, prove)
 
 function prove (async, assert) {
     var cadence = require('cadence'),
-        strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 }),
+        strata = createStrata({ directory: tmp, leafSize: 3, branchSize: 3 }),
         riffle = require('../..')
     async(function () {
         serialize(__dirname + '/fixtures/nine.json', tmp, async())
@@ -72,18 +72,17 @@ function prove (async, assert) {
             assert(records, [ 'd', 'c', 'b', 'a' ], 'keyed missing')
             iterator.unlock(async())
         })
-    }, function (records) {
     }, function () {
         riffle._racer = cadence(function (async, key) {
             if (key == 'h') async(function () {
                 strata.mutator('h', async())
             }, function (cursor) {
                 async(function () {
-                    cursor.remove(cursor.index, async())
-                }, function () {
+                    cursor.remove(cursor.index)
                     cursor.unlock(async())
-                    strata.balance(async())
                 })
+            }, function () {
+                strata.balance(async())
             })
         })
         riffle.reverse(strata, async())

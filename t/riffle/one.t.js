@@ -1,7 +1,7 @@
 require('./proof')(10, prove)
 
 function prove (async, assert) {
-    var strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 })
+    var strata = createStrata({ directory: tmp, leafSize: 3, branchSize: 3 })
     var riffle = require('../..')
     async(function () {
         strata.create(async())
@@ -9,8 +9,7 @@ function prove (async, assert) {
         strata.mutator('m', async())
     }, function (mutator) {
         async(function () {
-            mutator.insert('m', 'm', ~mutator.index, async())
-        }, function () {
+            mutator.insert('m', 'm', ~mutator.index)
             mutator.unlock(async())
         })
     }, function () {

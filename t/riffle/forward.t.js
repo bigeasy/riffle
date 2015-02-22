@@ -1,7 +1,7 @@
 require('./proof')(3, prove)
 
 function prove (async, assert) {
-    var strata = new Strata({ directory: tmp, leafSize: 3, branchSize: 3 }),
+    var strata = createStrata({ directory: tmp, leafSize: 3, branchSize: 3 }),
         riffle = require('../..')
     async(function () {
         serialize(__dirname + '/fixtures/nine.json', tmp, async())

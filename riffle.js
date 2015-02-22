@@ -55,6 +55,9 @@ function Reverse (strata, cursor, inclusive) {
 }
 
 Reverse.prototype.get = function () {
+    if (this._index < this._ghosts) {
+        return null
+    }
     return this._items[this._index--]
 }
 
@@ -73,9 +76,9 @@ Reverse.prototype.next = cadence(function (async) {
         this._index = index
         return [ true ]
     }
-    var address = this._cursor._page.address
+    var address = this._cursor._page.address, key
     async(function () {
-        var key = this._cursor.get(0).key
+        key = this._cursor.get(0).key
         async(function () {
             this._cursor.unlock(async())
         }, function () {
@@ -87,7 +90,8 @@ Reverse.prototype.next = cadence(function (async) {
         this.last = cursor._page.address === 1
         this._cursor = cursor
         this._items = cursor._page.items
-        if (this._cursor.right === address) {
+        this._ghosts = cursor._page.ghosts
+        if (this._cursor.right.address === address) {
             this._index = this._cursor.length - 1
         } else {
             var index = this._cursor.index
