@@ -1,6 +1,6 @@
 {
     "name":             "riffle",
-    "version":          "0.0.15",
+    "version":          "0.0.16",
     "author":           "Alan Gutierrez <alan@prettyrobots.com>",
     "description":      "Forward and reverse iteration of a Strata b-tree.",
     "keywords":
