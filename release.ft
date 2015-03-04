@@ -8,6 +8,7 @@ Upgrade Cadence and upgrade Proof because it now uses the latest Cadence. The la
 
 ### Issue by Issue
 
+ * Upgrade Proof to 0.0.51. #81.
  * Upgrade Strata to 0.0.34. #79.
  * Implement new `get` interface. #77.
  * Upgrade Cadence to 0.0.52. #74.
