@@ -1,4 +1,4 @@
-var cadence = require('cadence/redux')
+var cadence = require('cadence')
 
 function Forward (cursor, inclusive) {
     this._cursor = cursor
