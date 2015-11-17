@@ -11,11 +11,7 @@
     "contributors":     [],
     "homepage":         "https://github.com/bigeasy/riffle",
     "bugs":             "https://github.com/bigeasy/riffle/issues",
-    "licenses":
-    [{
-                        "type": "MIT",
-                        "url": "http://github.com/bigeasy/riffle/raw/master/LICENSE"
-    }],
+    "license":          "MIT",
     "repository":
     {
                         "type": "git",
