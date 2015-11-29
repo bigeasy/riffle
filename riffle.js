@@ -2,7 +2,7 @@ var cadence = require('cadence')
 
 function Forward (cursor, inclusive) {
     this._cursor = cursor
-    this.last = this._cursor._page.right.address == null
+    this.last = this._cursor.page.right.address == null
     this._inclusive = inclusive
     this._index = null
 }
@@ -15,7 +15,7 @@ Forward.prototype.next = cadence(function (async) {
     if (this._index === null) {
         var index = this._cursor.index
         this._index = index < 0 ? ~index : this._inclusive ? index : index + 1
-        this._items = this._cursor._page.items
+        this._items = this._cursor.page.items
         return [ this._index < this._items.length ]
     }
     async(function () {
@@ -24,9 +24,9 @@ Forward.prototype.next = cadence(function (async) {
         if (!more) {
             return [ false ]
         }
-        this.last = this._cursor._page.right.address === null
-        this._items = this._cursor._page.items
-        this._index = this._cursor._page.ghosts
+        this.last = this._cursor.page.right.address === null
+        this._items = this._cursor.page.items
+        this._index = this._cursor.page.ghosts
         return [ true ]
     })
 })
@@ -62,23 +62,23 @@ Reverse.prototype.get = function () {
 }
 
 Reverse.prototype.next = cadence(function (async) {
-    if (this._index !== null && this._cursor.address == 1) {
+    if (this._index !== null && this._cursor.page.address == 1) {
         return [ false ]
     }
     if (this._index === null) {
         var index = this._cursor.index
         index = index < 0 ? ~index - 1 : this._inclusive ? index : index - 1
-        if (index < this._cursor._page.ghosts && this._cursor._page.address === 1) {
+        if (index < this._cursor.page.ghosts && this._cursor.page.address === 1) {
             this._index = -1
             return [ false ]
         }
-        this._items = this._cursor._page.items
+        this._items = this._cursor.page.items
         this._index = index
         return [ true ]
     }
-    var address = this._cursor._page.address, key
+    var address = this._cursor.page.address, key
     async(function () {
-        key = this._cursor.get(0).key
+        key = this._cursor.page.items[0].key
         async(function () {
             this._cursor.unlock(async())
         }, function () {
@@ -87,12 +87,12 @@ Reverse.prototype.next = cadence(function (async) {
             this._strata.iterator(this._strata.leftOf(key), async())
         })
     }, function (cursor) {
-        this.last = cursor._page.address === 1
+        this.last = cursor.page.address === 1
         this._cursor = cursor
-        this._items = cursor._page.items
-        this._ghosts = cursor._page.ghosts
-        if (this._cursor.right.address === address) {
-            this._index = this._cursor.length - 1
+        this._items = cursor.page.items
+        this._ghosts = cursor.page.ghosts
+        if (this._cursor.page.right.address === address) {
+            this._index = this._cursor.page.items.length - 1
         } else {
             var index = this._cursor.index
             this._index = (index < 0 ? ~index : index) - 1
