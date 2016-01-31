@@ -24,7 +24,7 @@
     },
     "devDependencies":
     {
-                        "proof":              "0.0.56",
+                        "proof":              "1.x",
                         "rimraf":             "2.5.1",
                         "b-tree":             "1.x"
     },
