@@ -3,7 +3,7 @@ require('./proof')(7, prove)
 function prove (async, assert) {
     var cadence = require('cadence'),
         strata = createStrata({ directory: tmp, leafSize: 3, branchSize: 3 }),
-        riffle = require('../..')
+        riffle = require('..')
     async(function () {
         serialize(__dirname + '/fixtures/nine.json', tmp, async())
     }, function () {
