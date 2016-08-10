@@ -1,35 +1,34 @@
 {
-    "name":             "riffle",
-    "version":          "1.0.0",
-    "author":           "Alan Gutierrez <alan@prettyrobots.com>",
-    "description":      "Forward and reverse iteration of a Strata b-tree.",
+    "name":                 "riffle",
+    "version":              "1.0.0",
+    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
+    "description":          "Forward and reverse iteration of a Strata b-tree.",
     "keywords":
     [
-                        "btree", "leveldb", "levelup", "binary",
-                        "database", "json", "b-tree", "concurrent", "persistence"
+                            "btree", "leveldb", "levelup", "binary",
+                            "database", "json", "b-tree", "concurrent", "persistence"
     ],
-    "contributors":     [],
-    "homepage":         "https://github.com/bigeasy/riffle",
-    "bugs":             "https://github.com/bigeasy/riffle/issues",
-    "license":          "MIT",
+    "homepage":             "https://github.com/bigeasy/riffle",
+    "bugs":                 "https://github.com/bigeasy/riffle/issues",
+    "license":              "MIT",
     "repository":
     {
-                        "type": "git",
-                        "url": "http://github.com/bigeasy/riffle.git"
+                            "type": "git",
+                            "url": "http://github.com/bigeasy/riffle.git"
     },
-    "main":             "riffle",
+    "main":                 "riffle",
     "dependencies":
     {
-                        "cadence":            "1.x"
+                            "cadence":                      "1.0.x"
     },
     "devDependencies":
     {
-                        "b-tree":             "1.x",
-                        "proof":              "1.x",
-                        "rimraf":             "2.5.1"
+                            "b-tree":                       "1.0.x",
+                            "proof":                        "1.0.x",
+                            "rimraf":                       "2.5.1"
     },
     "scripts":
     {
-                        "test": "proof platform win32 && proof test */*/*.t.js || t/test"
+                            "test": "proof platform win32 && proof test */*/*.t.js || t/test"
     }
 }
