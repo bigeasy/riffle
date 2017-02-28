@@ -1,0 +1,11 @@
+Advance
+
+    http://bigeasy.github.io/advance/
+
+Building
+
+    `npm install && make`
+
+Editing
+
+    Edit pages in `pages/` not in root directory.

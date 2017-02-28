@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>riffle.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+
+    <ul class="sections">
+
+          <li id="title">
+              <div class="annotation">
+                  <h1>riffle.js</h1>
+              </div>
+          </li>
+
+
+
+        <li id="section-1">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> cadence = <span class="hljs-built_in">require</span>(<span class="hljs-string">'cadence'</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Forward</span> (<span class="hljs-params">cursor, inclusive</span>) </span>{
+    <span class="hljs-keyword">this</span>._cursor = cursor
+    <span class="hljs-keyword">this</span>.last = <span class="hljs-keyword">this</span>._cursor.page.right.address == <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">this</span>._inclusive = inclusive
+    <span class="hljs-keyword">this</span>._index = <span class="hljs-literal">null</span>
+}
+
+Forward.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._items[<span class="hljs-keyword">this</span>._index++]
+}
+
+Forward.prototype.next = cadence(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">async</span>) </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._index === <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">var</span> index = <span class="hljs-keyword">this</span>._cursor.index
+        <span class="hljs-keyword">this</span>._index = index &lt; <span class="hljs-number">0</span> ? ~index : <span class="hljs-keyword">this</span>._inclusive ? index : index + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">this</span>._items = <span class="hljs-keyword">this</span>._cursor.page.items
+        <span class="hljs-keyword">return</span> [ <span class="hljs-keyword">this</span>._index &lt; <span class="hljs-keyword">this</span>._items.length ]
+    }
+    <span class="hljs-keyword">async</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">this</span>._cursor.next(<span class="hljs-keyword">async</span>())
+    }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">more</span>) </span>{
+        <span class="hljs-keyword">if</span> (!more) {
+            <span class="hljs-keyword">return</span> [ <span class="hljs-literal">false</span> ]
+        }
+        <span class="hljs-keyword">this</span>.last = <span class="hljs-keyword">this</span>._cursor.page.right.address === <span class="hljs-literal">null</span>
+        <span class="hljs-keyword">this</span>._items = <span class="hljs-keyword">this</span>._cursor.page.items
+        <span class="hljs-keyword">this</span>._index = <span class="hljs-keyword">this</span>._cursor.page.ghosts
+        <span class="hljs-keyword">return</span> [ <span class="hljs-literal">true</span> ]
+    })
+})
+
+Forward.prototype.unlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>) </span>{
+    <span class="hljs-keyword">this</span>._cursor.unlock(callback)
+}
+
+exports.forward = cadence(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">async, strata, key, inclusive</span>) </span>{
+    <span class="hljs-keyword">var</span> condition = key == <span class="hljs-literal">null</span> ? strata.left : strata.key(key)
+    inclusive = inclusive == <span class="hljs-literal">null</span> ? <span class="hljs-literal">true</span> : inclusive
+    <span class="hljs-keyword">async</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        strata.iterator(condition, <span class="hljs-keyword">async</span>())
+    }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">cursor</span>) </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Forward(cursor, inclusive)
+    })
+})
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Reverse</span> (<span class="hljs-params">strata, cursor, inclusive</span>) </span>{
+    <span class="hljs-keyword">var</span> index = cursor.index
+    <span class="hljs-keyword">this</span>._strata = strata
+    <span class="hljs-keyword">this</span>._cursor = cursor
+    <span class="hljs-keyword">this</span>._index = <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">this</span>._inclusive = inclusive
+    <span class="hljs-keyword">this</span>.last = <span class="hljs-literal">false</span>
+}
+
+Reverse.prototype.get = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._index &lt; <span class="hljs-keyword">this</span>._ghosts) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._items[<span class="hljs-keyword">this</span>._index--]
+}
+
+Reverse.prototype.next = cadence(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">async</span>) </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._index !== <span class="hljs-literal">null</span> &amp;&amp; <span class="hljs-keyword">this</span>._cursor.page.address == <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">return</span> [ <span class="hljs-literal">false</span> ]
+    }
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._index === <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">var</span> index = <span class="hljs-keyword">this</span>._cursor.index
+        index = index &lt; <span class="hljs-number">0</span> ? ~index - <span class="hljs-number">1</span> : <span class="hljs-keyword">this</span>._inclusive ? index : index - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> (index &lt; <span class="hljs-keyword">this</span>._cursor.page.ghosts &amp;&amp; <span class="hljs-keyword">this</span>._cursor.page.address === <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">this</span>._index = <span class="hljs-number">-1</span>
+            <span class="hljs-keyword">return</span> [ <span class="hljs-literal">false</span> ]
+        }
+        <span class="hljs-keyword">this</span>._items = <span class="hljs-keyword">this</span>._cursor.page.items
+        <span class="hljs-keyword">this</span>._index = index
+        <span class="hljs-keyword">return</span> [ <span class="hljs-literal">true</span> ]
+    }
+    <span class="hljs-keyword">var</span> address = <span class="hljs-keyword">this</span>._cursor.page.address, key
+    <span class="hljs-keyword">async</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        key = <span class="hljs-keyword">this</span>._cursor.page.items[<span class="hljs-number">0</span>].key
+        <span class="hljs-keyword">async</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">this</span>._cursor.unlock(<span class="hljs-keyword">async</span>())
+        }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            exports._racer(key, <span class="hljs-keyword">async</span>())
+        }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">this</span>._strata.iterator(<span class="hljs-keyword">this</span>._strata.leftOf(key), <span class="hljs-keyword">async</span>())
+        })
+    }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">cursor</span>) </span>{
+        <span class="hljs-keyword">this</span>.last = cursor.page.address === <span class="hljs-number">1</span>
+        <span class="hljs-keyword">this</span>._cursor = cursor
+        <span class="hljs-keyword">this</span>._items = cursor.page.items
+        <span class="hljs-keyword">this</span>._ghosts = cursor.page.ghosts
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._cursor.page.right.address === address) {
+            <span class="hljs-keyword">this</span>._index = <span class="hljs-keyword">this</span>._cursor.page.items.length - <span class="hljs-number">1</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">var</span> index = <span class="hljs-keyword">this</span>._cursor.index
+            <span class="hljs-keyword">this</span>._index = (index &lt; <span class="hljs-number">0</span> ? ~index : index) - <span class="hljs-number">1</span>
+        }
+        <span class="hljs-keyword">return</span> [ <span class="hljs-literal">true</span> ]
+    })
+})
+
+Reverse.prototype.unlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>) </span>{
+    <span class="hljs-keyword">this</span>._cursor.unlock(callback)
+}
+
+exports.reverse = cadence(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">async, strata, key, inclusive</span>) </span>{
+    inclusive = inclusive == <span class="hljs-literal">null</span> ? <span class="hljs-literal">true</span> : inclusive
+    <span class="hljs-keyword">var</span> condition = key == <span class="hljs-literal">null</span> ? strata.right : strata.key(key)
+    <span class="hljs-keyword">async</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        strata.iterator(condition, <span class="hljs-keyword">async</span>())
+    }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">cursor</span>) </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Reverse(strata, cursor, inclusive)
+    })
+})
+
+exports._racer = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, callback</span>) </span>{ callback() }</pre></div></div>
+
+        </li>
+
+    </ul>
+  </div>
+</body>
+</html>
