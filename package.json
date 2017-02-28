@@ -27,7 +27,7 @@
     {
                             "b-tree":                       "1.0.x",
                             "proof":                        "1.2.x",
-                            "rimraf":                       "2.5.1"
+                            "rimraf":                       "2.6.1"
     },
     "main":                 "riffle",
     "scripts":
