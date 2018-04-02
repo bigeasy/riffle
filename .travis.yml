@@ -13,5 +13,6 @@ branches:
     - travis-ci
 
 before_install:
-  - npm install
-  - npm install -g istanbul coveralls
+  - npm install -g npm
+  - npm install --no-package-lock --no-save
+  - npm install -g istanbul coveralls uglify-js
