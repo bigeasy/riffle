@@ -7,8 +7,8 @@
 
     "keywords":
     [
-                            "btree", "leveldb", "levelup", "binary",
-                            "database", "json", "b-tree", "concurrent", "persistence"
+                            "btree", "leveldb", "levelup", "binary", "database",
+                            "json", "b-tree", "concurrent", "persistence"
     ],
     "author":               "Alan Gutierrez <alan@prettyrobots.com>",
     "homepage":             "https://github.com/bigeasy/riffle",
@@ -21,17 +21,16 @@
     },
     "dependencies":
     {
-                            "cadence":                      "1.0.x"
     },
     "devDependencies":
     {
-                            "b-tree":                       "1.0.x",
-                            "proof":                        "3.0.x",
+                            "b-tree":                       "2.0.0-alpha.5",
+                            "proof":                        "9.0.x",
                             "rimraf":                       "3.0.2"
     },
     "main":                 "riffle",
     "scripts":
     {
-                            "test": "proof platform win32 && proof test */*.t.js || t/test"
+                            "test": "proof test/*.t.js"
     }
 }
