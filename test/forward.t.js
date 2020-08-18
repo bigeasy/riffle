@@ -1,6 +1,5 @@
 require('proof')(7, async okay => {
     const path = require('path')
-    const fs = require('fs').promises
 
     const Strata = require('b-tree')
     const Cache = require('b-tree/cache')
@@ -11,7 +10,6 @@ require('proof')(7, async okay => {
     const Riffle = require('..')
 
     const directory = path.resolve(__dirname, './tmp/forward')
-    await fs.mkdir(directory, { recursive: true })
 
     await utilities.reset(directory)
     await utilities.serialize(directory, {
