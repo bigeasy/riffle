@@ -9,7 +9,7 @@ require('proof')(7, async okay => {
 
     const riffle = require('..')
 
-    const directory = path.resolve(__dirname, './tmp/forward')
+    const directory = path.resolve(__dirname, './tmp/riffle')
 
     await utilities.reset(directory)
     await utilities.serialize(directory, {
