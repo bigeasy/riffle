@@ -7,7 +7,7 @@ require('proof')(7, async okay => {
 
     const utilities = require('b-tree/utilities')
 
-    const Riffle = require('..')
+    const riffle = require('..')
 
     const directory = path.resolve(__dirname, './tmp/forward')
 
@@ -26,7 +26,7 @@ require('proof')(7, async okay => {
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
         const gathered = []
-        for await (const items of new Riffle.Forward(strata, Strata.MIN, 2)) {
+        for await (const items of riffle.forward(strata, Strata.MIN, 2)) {
             for (const item of items) {
                 gathered.push(item.value)
             }
@@ -41,7 +41,7 @@ require('proof')(7, async okay => {
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
         const gathered = []
-        for await (const items of new Riffle.Reverse(strata, Strata.MAX, 2)) {
+        for await (const items of riffle.reverse(strata, Strata.MAX, 2)) {
             for (let i = items.length - 1; i != -1; i--) {
                 gathered.push(items[i].value)
             }
@@ -56,7 +56,7 @@ require('proof')(7, async okay => {
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
         const gathered = []
-        for await (const items of new Riffle.Forward(strata, 'b', 2, false)) {
+        for await (const items of riffle.forward(strata, 'b', 2, false)) {
             for (const item of items) {
                 gathered.push(item.value)
             }
@@ -71,7 +71,7 @@ require('proof')(7, async okay => {
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
         const gathered = []
-        for await (const items of new Riffle.Reverse(strata, 'h', 2, false)) {
+        for await (const items of riffle.reverse(strata, 'h', 2, false)) {
             for (let i = items.length - 1; i != -1; i--) {
                 gathered.push(items[i].value)
             }
@@ -85,9 +85,9 @@ require('proof')(7, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'forward', 'missed' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const forward = new Riffle.Forward(strata, 'Z', false)
+        const forward = riffle.forward(strata, 'Z', false)
         const gathered = []
-        for await (const items of new Riffle.Forward(strata, 'Z', 2, false)) {
+        for await (const items of riffle.forward(strata, 'Z', 2, false)) {
             for (const item of items) {
                 gathered.push(item.value)
             }
@@ -101,9 +101,9 @@ require('proof')(7, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'reverse', 'missed' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const reverse = new Riffle.Reverse(strata, 'j', false)
+        const reverse = riffle.reverse(strata, 'j', false)
         const gathered = []
-        for await (const items of new Riffle.Reverse(strata, 'j', 2, false)) {
+        for await (const items of riffle.reverse(strata, 'j', 2, false)) {
             for (let i = items.length - 1; i != -1; i--) {
                 gathered.push(items[i].value)
             }
@@ -117,7 +117,7 @@ require('proof')(7, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'forward', 'iterator' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const forward = new Riffle.Forward(strata, Strata.MIN)
+        const forward = riffle.forward(strata, Strata.MIN)
         const gathered = []
         for await (const got of forward) {
             for (const item of got) {
@@ -134,7 +134,7 @@ require('proof')(7, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'break' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const forward = new Riffle.Forward(strata, Strata.MIN)
+        const forward = riffle.forward(strata, Strata.MIN)
         for await (const got of forward) {
             break
         }

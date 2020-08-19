@@ -7,7 +7,7 @@ require('proof')(2, async okay => {
 
     const utilities = require('b-tree/utilities')
 
-    const Riffle = require('..')
+    const riffle = require('..')
 
     const directory = path.resolve(__dirname, './tmp', 'empty')
 
@@ -17,7 +17,7 @@ require('proof')(2, async okay => {
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.create()
         const gathered = []
-        for await (const items of new Riffle.Forward(strata, Strata.MIN)) {
+        for await (const items of riffle.forward(strata, Strata.MIN)) {
             for (const item of items) {
                 gathered.push(item)
             }
@@ -33,7 +33,7 @@ require('proof')(2, async okay => {
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.create()
         const gathered = []
-        for await (const items of new Riffle.Reverse(strata, Strata.MAX)) {
+        for await (const items of riffle.reverse(strata, Strata.MAX)) {
             for (let i = items.length - 1; i != -1; i--) {
                 gathered.push(items[i])
             }
