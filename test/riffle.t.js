@@ -28,7 +28,7 @@ require('proof')(7, async okay => {
         const gathered = []
         for await (const items of riffle.forward(strata, Strata.MIN, 2)) {
             for (const item of items) {
-                gathered.push(item.value)
+                gathered.push(item.key)
             }
         }
         okay(gathered, expected, 'forward')
@@ -43,7 +43,7 @@ require('proof')(7, async okay => {
         const gathered = []
         for await (const items of riffle.reverse(strata, Strata.MAX, 2)) {
             for (let i = items.length - 1; i != -1; i--) {
-                gathered.push(items[i].value)
+                gathered.push(items[i].key)
             }
         }
         okay(gathered, expected.slice().reverse(), 'reverse')
@@ -58,7 +58,7 @@ require('proof')(7, async okay => {
         const gathered = []
         for await (const items of riffle.forward(strata, 'b', 2, false)) {
             for (const item of items) {
-                gathered.push(item.value)
+                gathered.push(item.key)
             }
         }
         okay(gathered, expected.slice(2), 'forward exclusive')
@@ -73,7 +73,7 @@ require('proof')(7, async okay => {
         const gathered = []
         for await (const items of riffle.reverse(strata, 'h', 2, false)) {
             for (let i = items.length - 1; i != -1; i--) {
-                gathered.push(items[i].value)
+                gathered.push(items[i].key)
             }
         }
         okay(gathered, expected.slice().reverse().slice(2), 'reverse exclusive')
@@ -89,7 +89,7 @@ require('proof')(7, async okay => {
         const gathered = []
         for await (const items of riffle.forward(strata, 'Z', 2, false)) {
             for (const item of items) {
-                gathered.push(item.value)
+                gathered.push(item.key)
             }
         }
         okay(gathered, expected, 'forward missed')
@@ -105,7 +105,7 @@ require('proof')(7, async okay => {
         const gathered = []
         for await (const items of riffle.reverse(strata, 'j', 2, false)) {
             for (let i = items.length - 1; i != -1; i--) {
-                gathered.push(items[i].value)
+                gathered.push(items[i].key)
             }
         }
         okay(gathered, expected.slice().reverse(), 'reverse missed')
@@ -121,7 +121,7 @@ require('proof')(7, async okay => {
         const gathered = []
         for await (const got of forward) {
             for (const item of got) {
-                gathered.push(item.value)
+                gathered.push(item.key)
             }
         }
         okay(gathered, expected, 'forward iterator')
