@@ -1,4 +1,4 @@
-require('proof')(7, async okay => {
+require('proof')(8, async okay => {
     const path = require('path')
 
     const Strata = require('b-tree')
@@ -26,7 +26,7 @@ require('proof')(7, async okay => {
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
         const gathered = []
-        for await (const items of riffle.forward(strata, Strata.MIN, 2)) {
+        for await (const items of riffle.forward(strata, Strata.MIN, { slice: 2 })) {
             for (const item of items) {
                 gathered.push(item.key)
             }
@@ -41,7 +41,7 @@ require('proof')(7, async okay => {
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
         const gathered = []
-        for await (const items of riffle.reverse(strata, Strata.MAX, 2)) {
+        for await (const items of riffle.reverse(strata, Strata.MAX, { slice: 2 })) {
             for (let i = items.length - 1; i != -1; i--) {
                 gathered.push(items[i].key)
             }
@@ -56,7 +56,7 @@ require('proof')(7, async okay => {
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
         const gathered = []
-        for await (const items of riffle.forward(strata, 'b', 2, false)) {
+        for await (const items of riffle.forward(strata, 'b', { slice: 2, inclusive: false })) {
             for (const item of items) {
                 gathered.push(item.key)
             }
@@ -71,7 +71,7 @@ require('proof')(7, async okay => {
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
         const gathered = []
-        for await (const items of riffle.reverse(strata, 'h', 2, false)) {
+        for await (const items of riffle.reverse(strata, 'h', { slice: 2, inclusive: false })) {
             for (let i = items.length - 1; i != -1; i--) {
                 gathered.push(items[i].key)
             }
@@ -85,7 +85,7 @@ require('proof')(7, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'forward', 'missed' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const forward = riffle.forward(strata, 'Z', false)
+        const forward = riffle.forward(strata, 'Z', { inclusive: false })
         const gathered = []
         for await (const items of riffle.forward(strata, 'Z', 2, false)) {
             for (const item of items) {
@@ -101,9 +101,8 @@ require('proof')(7, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'reverse', 'missed' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const reverse = riffle.reverse(strata, 'j', false)
         const gathered = []
-        for await (const items of riffle.reverse(strata, 'j', 2, false)) {
+        for await (const items of riffle.reverse(strata, 'j', { slice: 2, inclusive: false })) {
             for (let i = items.length - 1; i != -1; i--) {
                 gathered.push(items[i].key)
             }
@@ -138,6 +137,22 @@ require('proof')(7, async okay => {
         for await (const got of forward) {
             break
         }
+        strata.close()
+        await destructible.destructed
+    } ()
+
+    await async function () {
+        const destructible = new Destructible([ 'riffle.t', 'forward', 'strict' ])
+        const strata = new Strata(destructible, { directory, cache: new Cache })
+        await strata.open()
+        const forward = riffle.forward(strata, Strata.MIN, { strict: true, slice: 2 })
+        const gathered = []
+        for await (const got of forward) {
+            for (const item of got) {
+                gathered.push(item.key)
+            }
+        }
+        okay(gathered, expected, 'forward strict')
         strata.close()
         await destructible.destructed
     } ()
