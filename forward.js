@@ -1,3 +1,5 @@
+const Strata = require('b-tree')
+
 module.exports = function (strata, right, { slice = 32, inclusive = true, strict = false } = {}) {
     let previous = null
     return {
@@ -13,7 +15,22 @@ module.exports = function (strata, right, { slice = 32, inclusive = true, strict
                 cussor.release()
                 return { done: false, value: [] }
             }
-            const { index, found } = cursor.indexOf(right, cursor.page.ghosts)
+            const { index, found } = function () {
+                switch (right) {
+                case Strata.MIN:
+                    return {
+                        index: cursor.page.ghosts,
+                        found: cursor.page.ghosts < cursor.page.items.length
+                    }
+                case Strata.MAX:
+                    return {
+                        index: Math.max(cursor.page.ghosts.length - 1, cursor.page.items.ghosts),
+                        found: cursor.page.ghosts < cursor.page.items.length
+                    }
+                default:
+                    return cursor.indexOf(right, cursor.page.ghosts)
+                }
+            } ()
             if (index == null) {
                 cussor.release()
                 return { done: false, value: [] }

@@ -35,7 +35,9 @@ module.exports = function (strata, left, { slice = 32, inclusive = true } = {}) 
                     return { done: false, value: [] }
                 }
                 end = cursor.page.items.length
-            } else if (left !== Strata.MIN) {
+            } else if (left === Strata.MIN) {
+                end = cursor.page.item.ghosts
+            } else {
                 // Strata cannot get MIN wrong, the left-most page is always the
                 // left-most page.
                 const { found, index } = cursor.indexOf(left, cursor.page.ghosts)
