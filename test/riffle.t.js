@@ -33,7 +33,7 @@ require('proof')(8, async okay => {
         }
         okay(gathered, expected, 'forward')
         strata.close()
-        await destructible.destructed
+        await destructible.rejected
     } ()
 
     await async function () {
@@ -48,7 +48,7 @@ require('proof')(8, async okay => {
         }
         okay(gathered, expected.slice().reverse(), 'reverse')
         strata.close()
-        await destructible.destructed
+        await destructible.rejected
     } ()
 
     await async function () {
@@ -63,7 +63,7 @@ require('proof')(8, async okay => {
         }
         okay(gathered, expected.slice(2), 'forward exclusive')
         strata.close()
-        await destructible.destructed
+        await destructible.rejected
     } ()
 
     await async function () {
@@ -78,7 +78,7 @@ require('proof')(8, async okay => {
         }
         okay(gathered, expected.slice().reverse().slice(2), 'reverse exclusive')
         strata.close()
-        await destructible.destructed
+        await destructible.rejected
     } ()
 
     await async function () {
@@ -94,7 +94,7 @@ require('proof')(8, async okay => {
         }
         okay(gathered, expected, 'forward missed')
         strata.close()
-        await destructible.destructed
+        await destructible.rejected
     } ()
 
     await async function () {
@@ -109,7 +109,7 @@ require('proof')(8, async okay => {
         }
         okay(gathered, expected.slice().reverse(), 'reverse missed')
         strata.close()
-        await destructible.destructed
+        await destructible.rejected
     } ()
 
     await async function () {
@@ -125,7 +125,7 @@ require('proof')(8, async okay => {
         }
         okay(gathered, expected, 'forward iterator')
         strata.close()
-        await destructible.destructed
+        await destructible.rejected
     } ()
 
 
@@ -138,7 +138,7 @@ require('proof')(8, async okay => {
             break
         }
         strata.close()
-        await destructible.destructed
+        await destructible.rejected
     } ()
 
     await async function () {
@@ -154,6 +154,6 @@ require('proof')(8, async okay => {
         }
         okay(gathered, expected, 'forward strict')
         strata.close()
-        await destructible.destructed
+        await destructible.rejected
     } ()
 })
