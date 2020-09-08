@@ -23,8 +23,7 @@ require('proof')(2, async okay => {
             }
         }
         okay(gathered, [], 'empty forward')
-        strata.close()
-        await destructible.rejected
+        strata.destructible.destroy().rejected
     } ()
 
     await async function () {
@@ -39,7 +38,6 @@ require('proof')(2, async okay => {
             }
         }
         okay(gathered, [], 'empty reverse')
-        strata.close()
-        await destructible.rejected
+        strata.destructible.destroy().rejected
     } ()
 })
