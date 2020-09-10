@@ -1,9 +1,17 @@
 const Strata = require('b-tree')
 
-module.exports = function (strata, right, { slice = 32, inclusive = true } = {}) {
+module.exports = function (strata, right, {
+        slice = 32, inclusive = true, resumable = false
+} = {}) {
+    let previous = null
     return {
         [Symbol.asyncIterator]: function  () {
             return this
+        },
+        resumable: resumable,
+        resume: function (resume) {
+            right = resume
+            inclusive = false
         },
         next: async function () {
             if (right == null) {
