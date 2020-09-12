@@ -1,7 +1,8 @@
-require('proof')(8, async okay => {
+require('proof')(7, async okay => {
     const path = require('path')
 
     const Strata = require('b-tree')
+    const Racer = require('b-tree/racer')
     const Cache = require('b-tree/cache')
     const Destructible = require('destructible')
 
@@ -133,18 +134,17 @@ require('proof')(8, async okay => {
         strata.destructible.destroy().rejected
     } ()
 
-    await async function () {
-        const destructible = new Destructible([ 'riffle.t', 'forward', 'strict' ])
+    // TODO Start of a test of a deleted page.
+    {
+        const destructible = new Destructible([ 'riffle.t', 'deleted' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
-        await strata.open()
-        const forward = riffle.forward(strata, Strata.MIN, { strict: true, slice: 2 })
-        const gathered = []
-        for await (const got of forward) {
-            for (const item of got) {
-                gathered.push(item.key)
-            }
+        const racer = new Racer(strata, function ({ key }) {
+            console.log(key)
+        })
+        await racer.open()
+        const forward = riffle.forward(racer, 'd', { slice: 2 })
+        for await (const items of forward) {
         }
-        okay(gathered, expected, 'forward strict')
         strata.destructible.destroy().rejected
-    } ()
+    }
 })
