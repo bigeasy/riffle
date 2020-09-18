@@ -24,7 +24,7 @@
     },
     "devDependencies":
     {
-                            "b-tree":                       "2.0.0-alpha.33",
+                            "b-tree":                       "2.0.0-alpha.35",
                             "destructible":                 "7.0.0-alpha.9",
                             "proof":                        "^9.0.2"
     },
