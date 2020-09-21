@@ -47,7 +47,6 @@ module.exports = function (strata, left, {
                     cursor.release()
                     return { done: false, value: [] }
                 }
-                console.log({ found, inclusive, index, items: cursor.page.items })
                 end = inclusive && found ? index + 1 : index
             }
             const start = Math.max(cursor.page.ghosts, end - slice)
