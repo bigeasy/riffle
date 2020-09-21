@@ -42,8 +42,8 @@ require('proof')(7, async okay => {
         await strata.open()
         const gathered = []
         for await (const items of riffle.reverse(strata, Strata.MAX, { slice: 2 })) {
-            for (let i = items.length - 1; i != -1; i--) {
-                gathered.push(items[i].key)
+            for (const item of items) {
+                gathered.push(item.key)
             }
         }
         okay(gathered, expected.slice().reverse(), 'reverse')
@@ -70,8 +70,8 @@ require('proof')(7, async okay => {
         await strata.open()
         const gathered = []
         for await (const items of riffle.reverse(strata, 'h', { slice: 2, inclusive: false })) {
-            for (let i = items.length - 1; i != -1; i--) {
-                gathered.push(items[i].key)
+            for (const item of items) {
+                gathered.push(item.key)
             }
         }
         okay(gathered, expected.slice().reverse().slice(2), 'reverse exclusive')
@@ -99,8 +99,8 @@ require('proof')(7, async okay => {
         await strata.open()
         const gathered = []
         for await (const items of riffle.reverse(strata, 'j', { slice: 2, inclusive: false })) {
-            for (let i = items.length - 1; i != -1; i--) {
-                gathered.push(items[i].key)
+            for (const item of items) {
+                gathered.push(item.key)
             }
         }
         okay(gathered, expected.slice().reverse(), 'reverse missed')

@@ -59,7 +59,9 @@ module.exports = function (strata, left, {
                 : cursor.page.items[start == cursor.page.ghosts ? 0 : start].key
             cursor.release()
             fork = true
-            return { done: false, value: sliced }
+            // TODO Homogenize expects the array to be reversed, but I'd rather
+            // it went backwards with its index.
+            return { done: false, value: sliced.reverse() }
         }
     }
 }
