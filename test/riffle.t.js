@@ -1,4 +1,4 @@
-require('proof')(7, async okay => {
+require('proof')(8, async okay => {
     const path = require('path')
 
     const Strata = require('b-tree')
@@ -17,10 +17,10 @@ require('proof')(7, async okay => {
       '0.0': [ [ '0.1', null ], [ '1.1', 'd' ], [ '1.3', 'g' ] ],
       '0.1': [ [ 'right', 'd' ], [ 'insert', 0, 'a' ], [ 'insert', 1, 'b' ], [ 'insert', 2, 'c' ] ],
       '1.1': [ [ 'right', 'g' ], [ 'insert', 0, 'd' ], [ 'insert', 1, 'e' ], [ 'insert', 2, 'f' ] ],
-      '1.3': [ [ 'insert', 0, 'g' ], [ 'insert', 1, 'h' ], [ 'insert', 2, 'i' ], [ 'delete', 0 ] ]
+      '1.3': [ [ 'insert', 0, 'g' ], [ 'insert', 1, 'h' ], [ 'insert', 2, 'j' ], [ 'delete', 0 ] ]
     })
 
-    const expected = [ 'a', 'b', 'c', 'd', 'e', 'f', 'h', 'i' ]
+    const expected = [ 'a', 'b', 'c', 'd', 'e', 'f', 'h', 'j' ]
 
     await async function () {
         const destructible = new Destructible([ 'riffle.t', 'forward' ])
@@ -98,12 +98,26 @@ require('proof')(7, async okay => {
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
         const gathered = []
-        for await (const items of riffle.reverse(strata, 'j', { slice: 2, inclusive: false })) {
+        for await (const items of riffle.reverse(strata, 'i', { slice: 2, inclusive: false })) {
             for (const item of items) {
                 gathered.push(item.key)
             }
         }
-        okay(gathered, expected.slice().reverse(), 'reverse missed')
+        okay(gathered, expected.slice().reverse().slice(1), 'reverse missed')
+        strata.destructible.destroy().rejected
+    } ()
+
+    await async function () {
+        const destructible = new Destructible([ 'riffle.t', 'reverse', 'missed' ])
+        const strata = new Strata(destructible, { directory, cache: new Cache })
+        await strata.open()
+        const gathered = []
+        for await (const items of riffle.reverse(strata, 'l', { slice: 2, inclusive: false })) {
+            for (const item of items) {
+                gathered.push(item.key)
+            }
+        }
+        okay(gathered, expected.slice().reverse(), 'reverse beyond end')
         strata.destructible.destroy().rejected
     } ()
 
