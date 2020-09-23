@@ -21,24 +21,23 @@ module.exports = function (strata, right, {
                 switch (right) {
                 case Strata.MIN:
                     return {
-                        index: cursor.page.ghosts,
-                        found: cursor.page.ghosts < cursor.page.items.length
+                        index: 0,
+                        found: cursor.page.items.length != 0
                     }
                 case Strata.MAX:
                     return {
-                        index: Math.max(cursor.page.ghosts.length - 1, cursor.page.items.ghosts),
-                        found: cursor.page.ghosts < cursor.page.items.length
+                        index: Math.max(cursor.page.items.length - 1, 0),
+                        found: cursor.page.items.length != 0
                     }
                 default:
-                    return cursor.indexOf(right, cursor.page.ghosts)
+                    return cursor.indexOf(right)
                 }
             } ()
             if (index == null) {
                 cussor.release()
                 return { done: false, value: [] }
             }
-            let i = inclusive || ! found ? index : index + 1
-            const start = Math.max(i, cursor.page.ghosts)
+            const start = inclusive || ! found ? index : index + 1
             const sliced = cursor.page.items.slice(start, start + slice)
             right = start + sliced.length == cursor.page.items.length
                 ? cursor.page.right

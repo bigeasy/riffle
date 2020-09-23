@@ -18,7 +18,7 @@ module.exports = function (strata, left, {
             }
             let end = 0
             if (fork) {
-                const { found, index } = cursor.indexOf(left, cursor.page.ghosts)
+                const { found, index } = cursor.indexOf(left)
                 if (index == null) {
                     if (
                         cursor.page.right == null ||
@@ -29,7 +29,7 @@ module.exports = function (strata, left, {
                     }
                     end = cursor.page.items.length
                 } else {
-                    end = found
+                    end = index
                 }
             } else if (left === Strata.MAX) {
                 if (cursor.page.right != null) {
@@ -38,22 +38,24 @@ module.exports = function (strata, left, {
                 }
                 end = cursor.page.items.length
             } else if (left === Strata.MIN) {
-                end = cursor.page.item.ghosts
+                end = 0
             } else {
                 // Strata cannot get MIN wrong, the left-most page is always the
                 // left-most page.
-                const { found, index } = cursor.indexOf(left, cursor.page.ghosts)
+                const { found, index } = cursor.indexOf(left)
                 if (found == null) {
                     cursor.release()
                     return { done: false, value: [] }
                 }
                 end = inclusive && found ? index + 1 : index
             }
-            const start = Math.max(cursor.page.ghosts, end - slice)
+            const start = Math.max(end - slice, 0)
             const sliced = cursor.page.items.slice(start, end)
-            left = cursor.page.id == '0.1' && start == cursor.page.ghosts
-                ? null
-                : cursor.page.items[start == cursor.page.ghosts ? 0 : start].key
+            left = start == 0
+                ? cursor.page.id == '0.1'
+                    ? null
+                    : cursor.page.key
+                : cursor.page.items[start].key
             cursor.release()
             fork = true
             // TODO Homogenize expects the array to be reversed, but I'd rather
