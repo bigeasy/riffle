@@ -11,33 +11,45 @@ require('proof')(2, async okay => {
 
     const directory = path.resolve(__dirname, './tmp', 'empty')
 
-    await async function () {
+    {
         await utilities.reset(directory)
         const destructible = new Destructible([ 'empty.t', 'forward' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.create()
-        const gathered = []
-        for await (const items of riffle.forward(strata, Strata.MIN)) {
-            for (const item of items) {
-                gathered.push(item)
+        const gathered = [], promises = []
+        const iterator = riffle.forward(strata, Strata.MIN)
+        while (!iterator.done) {
+            iterator.next(promises, items => {
+                for (const item of items) {
+                    gathered.push(item)
+                }
+            })
+            while (promises.length != 0) {
+                await promises.shift()
             }
         }
         okay(gathered, [], 'empty forward')
         strata.destructible.destroy().rejected
-    } ()
+    }
 
-    await async function () {
+    {
         await utilities.reset(directory)
-        const destructible = new Destructible([ 'empty.t', 'reverse' ])
+        const destructible = new Destructible([ 'empty.t', 'forward' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.create()
-        const gathered = []
-        for await (const items of riffle.reverse(strata, Strata.MAX)) {
-            for (let i = items.length - 1; i != -1; i--) {
-                gathered.push(items[i])
+        const gathered = [], promises = []
+        const iterator = riffle.reverse(strata, Strata.MAX)
+        while (!iterator.done) {
+            iterator.next(promises, items => {
+                for (const item of items) {
+                    gathered.push(item)
+                }
+            })
+            while (promises.length != 0) {
+                await promises.shift()
             }
         }
-        okay(gathered, [], 'empty reverse')
+        okay(gathered, [], 'empty forward')
         strata.destructible.destroy().rejected
-    } ()
+    }
 })
