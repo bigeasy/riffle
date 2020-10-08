@@ -4,12 +4,12 @@ module.exports = function (strata, right, { slice = 32, inclusive = true } = {})
     let previous = null
     const iterator = {
         done: false,
-        next (promises, consume, terminator = iterator) {
+        next (trampoline, consume, terminator = iterator) {
             if (right == null) {
                 terminator.done = true
                 return []
             }
-            strata.search(promises, right, cursor => {
+            strata.search(trampoline, right, cursor => {
                 const { index, found } = cursor
                 const start = inclusive || ! found ? index : index + 1
                 const sliced = cursor.page.items.slice(start, start + slice)

@@ -3,11 +3,11 @@ const Strata = require('b-tree')
 module.exports = function (strata, left, { slice = 32, inclusive = true } = {}) {
     const iterator = {
         done: false,
-        next (promises, consume, terminator = iterator) {
+        next (trampoline, consume, terminator = iterator) {
             if (left == null) {
                 terminator.done = true
             } else {
-                strata.search(promises, left, ! inclusive, cursor => {
+                strata.search(trampoline, left, ! inclusive, cursor => {
                     const { index, found } = cursor
                     const end = left === Strata.MAX
                         ? cursor.page.items.length
