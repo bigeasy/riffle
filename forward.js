@@ -17,7 +17,11 @@ module.exports = function (strata, right, { slice = 32, inclusive = true } = {})
                     ? cursor.page.right
                     : cursor.page.items[start + sliced.length].key
                 inclusive = true
-                consume(sliced)
+                if (sliced.length == 0) {
+                    trampoline.push(() => iterator.next(trampoline, consume, terminator))
+                } else {
+                    consume(sliced)
+                }
             })
         }
     }
