@@ -3,6 +3,7 @@ require('proof')(9, async okay => {
 
     const Strata = require('b-tree')
     const Cache = require('b-tree/cache')
+    const Trampoline = require('skip')
     const Destructible = require('destructible')
 
     const utilities = require('b-tree/utilities')
@@ -25,16 +26,16 @@ require('proof')(9, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'forward' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const gathered = [], promises = []
+        const gathered = [], trampoline = new Trampoline
         const iterator = riffle.forward(strata, Strata.MIN, { slice: 2 })
         while (!iterator.done) {
-            iterator.next(promises, items => {
+            iterator.next(trampoline, items => {
                 for (const item of items) {
                     gathered.push(item.key)
                 }
             })
-            while (promises.length != 0) {
-                await promises.shift()
+            while (trampoline.seek()) {
+                await trampoline.shift()
             }
         }
         okay(gathered, expected, 'forward')
@@ -45,16 +46,16 @@ require('proof')(9, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'reverse' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const gathered = [], promises = []
+        const gathered = [], trampoline = new Trampoline
         const iterator = riffle.reverse(strata, Strata.MAX, { slice: 2 })
         while (!iterator.done) {
-            iterator.next(promises, items => {
+            iterator.next(trampoline, items => {
                 for (const item of items) {
                     gathered.push(item.key)
                 }
             })
-            while (promises.length != 0) {
-                await promises.shift()
+            while (trampoline.seek()) {
+                await trampoline.shift()
             }
         }
         okay(gathered, expected.slice().reverse(), 'reverse')
@@ -65,16 +66,16 @@ require('proof')(9, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'forward', 'exclusive' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const gathered = [], promises = []
+        const gathered = [], trampoline = new Trampoline
         const iterator = riffle.forward(strata, 'b', { slice: 2, inclusive: false })
         while (!iterator.done) {
-            iterator.next(promises, items => {
+            iterator.next(trampoline, items => {
                 for (const item of items) {
                     gathered.push(item.key)
                 }
             })
-            while (promises.length != 0) {
-                await promises.shift()
+            while (trampoline.seek()) {
+                await trampoline.shift()
             }
         }
         okay(gathered, expected.slice(2), 'forward exclusive')
@@ -85,16 +86,16 @@ require('proof')(9, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'reverse', 'exclusive' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const gathered = [], promises = []
+        const gathered = [], trampoline = new Trampoline
         const iterator = riffle.reverse(strata, 'h', { slice: 2, inclusive: false })
         while (!iterator.done) {
-            iterator.next(promises, items => {
+            iterator.next(trampoline, items => {
                 for (const item of items) {
                     gathered.push(item.key)
                 }
             })
-            while (promises.length != 0) {
-                await promises.shift()
+            while (trampoline.seek()) {
+                await trampoline.shift()
             }
         }
         okay(gathered, expected.slice().reverse().slice(2), 'reverse exclusive')
@@ -105,16 +106,16 @@ require('proof')(9, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'forward', 'missed' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const gathered = [], promises = []
+        const gathered = [], trampoline = new Trampoline
         const iterator = riffle.forward(strata, 'Z', { inclusive: false })
         while (!iterator.done) {
-            iterator.next(promises, items => {
+            iterator.next(trampoline, items => {
                 for (const item of items) {
                     gathered.push(item.key)
                 }
             })
-            while (promises.length != 0) {
-                await promises.shift()
+            while (trampoline.seek()) {
+                await trampoline.shift()
             }
         }
         okay(gathered, expected, 'forward missed')
@@ -125,16 +126,16 @@ require('proof')(9, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'reverse', 'missed' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const gathered = [], promises = []
+        const gathered = [], trampoline = new Trampoline
         const iterator = riffle.reverse(strata, 'i', { slice: 2, inclusive: false })
         while (!iterator.done) {
-            iterator.next(promises, items => {
+            iterator.next(trampoline, items => {
                 for (const item of items) {
                     gathered.push(item.key)
                 }
             })
-            while (promises.length != 0) {
-                await promises.shift()
+            while (trampoline.seek()) {
+                await trampoline.shift()
             }
         }
         okay(gathered, expected.slice().reverse().slice(1), 'reverse missed')
@@ -145,16 +146,16 @@ require('proof')(9, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'reverse', 'missed' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const gathered = [], promises = []
+        const gathered = [], trampoline = new Trampoline
         const iterator = riffle.reverse(strata, 'l', { slice: 2, inclusive: false })
         while (!iterator.done) {
-            iterator.next(promises, items => {
+            iterator.next(trampoline, items => {
                 for (const item of items) {
                     gathered.push(item.key)
                 }
             })
-            while (promises.length != 0) {
-                await promises.shift()
+            while (trampoline.seek()) {
+                await trampoline.shift()
             }
         }
         okay(gathered, expected.slice().reverse(), 'reverse beyond end')
@@ -165,16 +166,16 @@ require('proof')(9, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'forward', 'iterator' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const gathered = [], promises = []
+        const gathered = [], trampoline = new Trampoline
         const iterator = riffle.forward(strata, Strata.MIN)
         while (!iterator.done) {
-            iterator.next(promises, items => {
+            iterator.next(trampoline, items => {
                 for (const item of items) {
                     gathered.push(item.key)
                 }
             })
-            while (promises.length != 0) {
-                await promises.shift()
+            while (trampoline.seek()) {
+                await trampoline.shift()
             }
         }
         okay(gathered, expected, 'forward iterator')
@@ -185,16 +186,16 @@ require('proof')(9, async okay => {
         const destructible = new Destructible([ 'riffle.t', 'reverse', 'min' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.open()
-        const gathered = [], promises = []
+        const gathered = [], trampoline = new Trampoline
         const iterator = riffle.reverse(strata, Strata.MIN)
         while (!iterator.done) {
-            iterator.next(promises, items => {
+            iterator.next(trampoline, items => {
                 for (const item of items) {
                     gathered.push(item.key)
                 }
             })
-            while (promises.length != 0) {
-                await promises.shift()
+            while (trampoline.seek()) {
+                await trampoline.shift()
             }
         }
         okay(gathered, [], 'reverse min')

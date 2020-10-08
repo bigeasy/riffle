@@ -3,6 +3,7 @@ require('proof')(2, async okay => {
 
     const Strata = require('b-tree')
     const Cache = require('b-tree/cache')
+    const Trampoline = require('skip')
     const Destructible = require('destructible')
 
     const utilities = require('b-tree/utilities')
@@ -16,16 +17,16 @@ require('proof')(2, async okay => {
         const destructible = new Destructible([ 'empty.t', 'forward' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.create()
-        const gathered = [], promises = []
+        const gathered = [], trampoline = new Trampoline
         const iterator = riffle.forward(strata, Strata.MIN)
         while (!iterator.done) {
-            iterator.next(promises, items => {
+            iterator.next(trampoline, items => {
                 for (const item of items) {
                     gathered.push(item)
                 }
             })
-            while (promises.length != 0) {
-                await promises.shift()
+            while (trampoline.seek()) {
+                await trampoline.shift()
             }
         }
         okay(gathered, [], 'empty forward')
@@ -37,16 +38,16 @@ require('proof')(2, async okay => {
         const destructible = new Destructible([ 'empty.t', 'forward' ])
         const strata = new Strata(destructible, { directory, cache: new Cache })
         await strata.create()
-        const gathered = [], promises = []
+        const gathered = [], trampoline = new Trampoline
         const iterator = riffle.reverse(strata, Strata.MAX)
         while (!iterator.done) {
-            iterator.next(promises, items => {
+            iterator.next(trampoline, items => {
                 for (const item of items) {
                     gathered.push(item)
                 }
             })
-            while (promises.length != 0) {
-                await promises.shift()
+            while (trampoline.seek()) {
+                await trampoline.shift()
             }
         }
         okay(gathered, [], 'empty forward')
