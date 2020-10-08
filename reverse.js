@@ -22,11 +22,7 @@ module.exports = function (strata, left, { slice = 32, inclusive = true } = {}) 
                             : cursor.page.key
                         : cursor.page.items[start].key
                     inclusive = false
-                    if (sliced.length == 0) {
-                        trampoline.push(() => iterator.next(trampoline, consume, terminator))
-                    } else {
-                        consume(sliced.reverse())
-                    }
+                    consume(sliced.reverse())
                 })
             }
         }
