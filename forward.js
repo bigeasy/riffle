@@ -1,7 +1,6 @@
 const Strata = require('b-tree')
 
 module.exports = function (strata, right, { slice = 32, inclusive = true } = {}) {
-    let previous = null
     const iterator = {
         done: false,
         next (trampoline, consume, terminator = iterator) {
