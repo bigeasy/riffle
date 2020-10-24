@@ -3,7 +3,7 @@ require('proof')(9, async okay => {
 
     const Strata = require('b-tree')
     const Cache = require('b-tree/cache')
-    const Trampoline = require('skip')
+    const Trampoline = require('reciprocate')
     const Destructible = require('destructible')
 
     const utilities = require('b-tree/utilities')

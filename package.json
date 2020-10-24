@@ -27,7 +27,7 @@
                             "b-tree":                       "2.0.0-alpha.57",
                             "destructible":                 "7.0.0-alpha.14",
                             "proof":                        "^9.0.2",
-                            "skip":                         "0.1.1"
+                            "reciprocate":                  "0.0.1"
     },
     "main":                 "riffle",
     "scripts":

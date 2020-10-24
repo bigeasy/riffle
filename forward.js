@@ -6,7 +6,7 @@ module.exports = function (strata, right, { slice = 32, inclusive = true } = {})
         next (trampoline, consume, terminator = iterator) {
             if (right == null) {
                 terminator.done = true
-                return []
+                return
             }
             strata.search(trampoline, right, cursor => {
                 const { index, found } = cursor
