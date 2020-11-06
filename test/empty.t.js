@@ -15,8 +15,7 @@ require('proof')(2, async okay => {
     {
         await utilities.reset(directory)
         const destructible = new Destructible([ 'empty.t', 'forward' ])
-        const strata = new Strata(destructible, { directory, cache: new Cache })
-        await strata.create()
+        const strata = await Strata.open(destructible, { directory, cache: new Cache, create: true })
         const gathered = [], trampoline = new Trampoline
         const iterator = riffle(strata, Strata.MIN)
         while (!iterator.done) {
@@ -36,8 +35,7 @@ require('proof')(2, async okay => {
     {
         await utilities.reset(directory)
         const destructible = new Destructible([ 'empty.t', 'reverse' ])
-        const strata = new Strata(destructible, { directory, cache: new Cache })
-        await strata.create()
+        const strata = await Strata.open(destructible, { directory, cache: new Cache, create: true })
         const gathered = [], trampoline = new Trampoline
         const iterator = riffle(strata, Strata.MAX, { reverse: true })
         while (!iterator.done) {
