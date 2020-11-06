@@ -1,10 +1,12 @@
-require('proof')(9, async okay => {
+require('proof')(13, async okay => {
     const path = require('path')
 
     const Strata = require('b-tree')
     const Cache = require('b-tree/cache')
     const Trampoline = require('reciprocate')
     const Destructible = require('destructible')
+
+    const mvcc = require('mvcc')
 
     const utilities = require('b-tree/utilities')
 
@@ -28,6 +30,8 @@ require('proof')(9, async okay => {
         await strata.open()
         const gathered = [], trampoline = new Trampoline
         const iterator = riffle(strata, Strata.MIN, { slice: 2 })
+        okay(iterator.type != null, 'reverse type not null')
+        okay(iterator.type, mvcc.FORWARD, 'type if forward')
         while (!iterator.done) {
             iterator.next(trampoline, items => {
                 for (const item of items) {
@@ -48,6 +52,8 @@ require('proof')(9, async okay => {
         await strata.open()
         const gathered = [], trampoline = new Trampoline
         const iterator = riffle(strata, Strata.MAX, { slice: 2, reverse: true })
+        okay(iterator.type != null, 'reverse type not null')
+        okay(iterator.type, mvcc.REVERSE, 'type if reverse')
         while (!iterator.done) {
             iterator.next(trampoline, items => {
                 for (const item of items) {

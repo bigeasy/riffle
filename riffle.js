@@ -36,7 +36,7 @@ module.exports = function (strata, key, {
     } else {
         const iterator = {
             done: false,
-            type: mvcc.FOWARD,
+            type: mvcc.FORWARD,
             next (trampoline, consume, terminator = iterator) {
                 if (key == null) {
                     terminator.done = true
