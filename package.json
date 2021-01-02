@@ -21,7 +21,7 @@
     },
     "dependencies":
     {
-                            "mvcc":                         "2.0.0-alpha.2"
+                            "mvcc":                         "2.0.0-alpha.3"
     },
     "devDependencies":
     {
