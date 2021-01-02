@@ -2,7 +2,8 @@ require('proof')(13, async okay => {
     const path = require('path')
 
     const Strata = require('b-tree')
-    const Cache = require('magazine')
+    const FileSystem = require('b-tree/filesystem')
+    const Magazine = require('magazine')
     const Trampoline = require('reciprocate')
     const Destructible = require('destructible')
     const Turnstile = require('turnstile')
@@ -28,9 +29,11 @@ require('proof')(13, async okay => {
     {
         const destructible = new Destructible($ => $(), [ 'riffle.t', 'forward' ])
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
-        const cache = new Cache
+        const pages = new Magazine
+        const handles = new FileSystem.HandleCache(new Magazine)
+        const storage = new FileSystem(directory, handles)
         destructible.rescue($ => $(), 'test', async () => {
-            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { directory, cache, turnstile })
+            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MIN, { slice: 2 })
             okay(iterator.type != null, 'reverse type not null')
@@ -48,15 +51,18 @@ require('proof')(13, async okay => {
             okay(gathered, expected, 'forward')
             destructible.destroy()
         })
-        await destructible.rejected
+        await destructible.promise
+        await handles.shrink(0)
     }
 
     {
         const destructible = new Destructible($ => $(), [ 'riffle.t', 'reverse' ])
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
-        const cache = new Cache
+        const pages = new Magazine
+        const handles = new FileSystem.HandleCache(new Magazine)
+        const storage = new FileSystem(directory, handles)
         destructible.rescue($ => $(), 'test', async () => {
-            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { directory, cache, turnstile })
+            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MAX, { slice: 2, reverse: true })
             okay(iterator.type != null, 'reverse type not null')
@@ -74,15 +80,18 @@ require('proof')(13, async okay => {
             okay(gathered, expected.slice().reverse(), 'reverse')
             destructible.destroy()
         })
-        await destructible.rejected
+        await destructible.promise
+        await handles.shrink(0)
     }
 
     {
         const destructible = new Destructible($ => $(), [ 'riffle.t', 'exclusive' ])
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
-        const cache = new Cache
+        const pages = new Magazine
+        const handles = new FileSystem.HandleCache(new Magazine)
+        const storage = new FileSystem(directory, handles)
         destructible.rescue($ => $(), 'test', async () => {
-            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { directory, cache, turnstile })
+            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, 'b', { slice: 2, inclusive: false })
             while (!iterator.done) {
@@ -98,15 +107,18 @@ require('proof')(13, async okay => {
             okay(gathered, expected.slice(2), 'forward exclusive')
             destructible.destroy()
         })
-        await destructible.rejected
+        await destructible.promise
+        await handles.shrink(0)
     }
 
     {
         const destructible = new Destructible($ => $(), [ 'riffle.t', 'reverse', 'exclusive' ])
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
-        const cache = new Cache
+        const pages = new Magazine
+        const handles = new FileSystem.HandleCache(new Magazine)
+        const storage = new FileSystem(directory, handles)
         destructible.rescue($ => $(), 'test', async () => {
-            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { directory, cache, turnstile })
+            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, 'h', { slice: 2, inclusive: false, reverse: true })
             while (!iterator.done) {
@@ -122,15 +134,18 @@ require('proof')(13, async okay => {
             okay(gathered, expected.slice().reverse().slice(2), 'reverse exclusive')
             destructible.destroy()
         })
-        await destructible.rejected
+        await destructible.promise
+        await handles.shrink(0)
     }
 
     {
         const destructible = new Destructible($ => $(), [ 'riffle.t', 'forward', 'missed' ])
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
-        const cache = new Cache
+        const pages = new Magazine
+        const handles = new FileSystem.HandleCache(new Magazine)
+        const storage = new FileSystem(directory, handles)
         destructible.rescue($ => $(), 'test', async () => {
-            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { directory, cache, turnstile })
+            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, 'Z', { inclusive: false })
             while (!iterator.done) {
@@ -146,15 +161,18 @@ require('proof')(13, async okay => {
             okay(gathered, expected, 'forward missed')
             destructible.destroy()
         })
-        await destructible.rejected
+        await destructible.promise
+        await handles.shrink(0)
     }
 
     {
         const destructible = new Destructible($ => $(), [ 'riffle.t', 'reverse', 'missed' ])
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
-        const cache = new Cache
+        const pages = new Magazine
+        const handles = new FileSystem.HandleCache(new Magazine)
+        const storage = new FileSystem(directory, handles)
         destructible.rescue($ => $(), 'test', async () => {
-            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { directory, cache, turnstile })
+            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, 'i', { slice: 2, inclusive: false, reverse: true })
             while (!iterator.done) {
@@ -170,15 +188,18 @@ require('proof')(13, async okay => {
             okay(gathered, expected.slice().reverse().slice(1), 'reverse missed')
             destructible.destroy()
         })
-        await destructible.rejected
+        await destructible.promise
+        await handles.shrink(0)
     }
 
     {
         const destructible = new Destructible($ => $(), [ 'riffle.t', 'reverse', 'end' ])
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
-        const cache = new Cache
+        const pages = new Magazine
+        const handles = new FileSystem.HandleCache(new Magazine)
+        const storage = new FileSystem(directory, handles)
         destructible.rescue($ => $(), 'test', async () => {
-            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { directory, cache, turnstile })
+            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, 'l', { slice: 2, inclusive: false, reverse: true })
             while (!iterator.done) {
@@ -194,15 +215,18 @@ require('proof')(13, async okay => {
             okay(gathered, expected.slice().reverse(), 'reverse beyond end')
             destructible.destroy()
         })
-        await destructible.rejected
+        await destructible.promise
+        await handles.shrink(0)
     }
 
     {
         const destructible = new Destructible($ => $(), [ 'riffle.t', 'forward', 'iterator' ])
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
-        const cache = new Cache
+        const pages = new Magazine
+        const handles = new FileSystem.HandleCache(new Magazine)
+        const storage = new FileSystem(directory, handles)
         destructible.rescue($ => $(), 'test', async () => {
-            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { directory, cache, turnstile })
+            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MIN)
             while (!iterator.done) {
@@ -218,15 +242,18 @@ require('proof')(13, async okay => {
             okay(gathered, expected, 'forward iterator')
             destructible.destroy()
         })
-        await destructible.rejected
+        await destructible.promise
+        await handles.shrink(0)
     }
 
     {
         const destructible = new Destructible($ => $(), [ 'riffle.t', 'reverse', 'min' ])
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
-        const cache = new Cache
+        const pages = new Magazine
+        const handles = new FileSystem.HandleCache(new Magazine)
+        const storage = new FileSystem(directory, handles)
         destructible.rescue($ => $(), 'test', async () => {
-            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { directory, cache, turnstile })
+            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MIN, { reverse: true })
             while (!iterator.done) {
@@ -242,6 +269,7 @@ require('proof')(13, async okay => {
             okay(gathered, [], 'reverse min')
             destructible.destroy()
         })
-        await destructible.rejected
+        await destructible.promise
+        await handles.shrink(0)
     }
 })

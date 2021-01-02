@@ -25,7 +25,7 @@
     },
     "devDependencies":
     {
-                            "b-tree":                       "2.0.0-alpha.69",
+                            "b-tree":                       "2.0.0-alpha.71",
                             "destructible":                 "7.0.0-alpha.30",
                             "magazine":                     "6.0.0-alpha.5",
                             "proof":                        "^9.0.2",
