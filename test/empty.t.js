@@ -16,13 +16,13 @@ require('proof')(2, async okay => {
 
     {
         await utilities.reset(directory)
-        const destructible = new Destructible($ => $(), [ 'empty.t', 'forward' ])
+        const destructible = new Destructible($ => $(), 'empty.forward')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new FileSystem.HandleCache(new Magazine)
-        const storage = new FileSystem(directory, handles)
+        const storage = await FileSystem.open({ directory, handles, create: true })
         destructible.rescue($ => $(), 'test', async () => {
-            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, create: true })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MIN)
             while (!iterator.done) {
@@ -44,13 +44,13 @@ require('proof')(2, async okay => {
 
     {
         await utilities.reset(directory)
-        const destructible = new Destructible($ => $(), [ 'empty.t', 'reverse' ])
+        const destructible = new Destructible($ => $(), 'empty.reverse')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new FileSystem.HandleCache(new Magazine)
-        const storage = new FileSystem(directory, handles)
+        const storage = await FileSystem.open({ directory, handles, create: true })
         destructible.rescue($ => $(), 'test', async () => {
-            const strata = await Strata.open(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, create: true })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MAX, { reverse: true })
             while (!iterator.done) {
