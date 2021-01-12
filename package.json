@@ -1,6 +1,6 @@
 {
     "name":                 "riffle",
-    "version":              "2.0.0-alpha.54",
+    "version":              "2.0.0-alpha.55",
     "description":
 
       "Forward and reverse iteration of a Strata b-tree.",
@@ -28,9 +28,9 @@
                             "b-tree":                       "2.0.0-alpha.80",
                             "destructible":                 "7.0.0-alpha.38",
                             "magazine":                     "6.0.0-alpha.5",
+                            "operation":                    "6.0.0-alpha.4",
                             "proof":                        "^9.0.2",
                             "reciprocate":                  "0.0.5",
-                            "operation":                    "6.0.0-alpha.4",
                             "turnstile":                    "6.0.0-alpha.52"
     },
     "main":                 "riffle",
