@@ -30,6 +30,7 @@
                             "magazine":                     "6.0.0-alpha.5",
                             "proof":                        "^9.0.2",
                             "reciprocate":                  "0.0.5",
+                            "operation":                    "6.0.0-alpha.4",
                             "turnstile":                    "6.0.0-alpha.52"
     },
     "main":                 "riffle",

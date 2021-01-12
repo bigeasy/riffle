@@ -2,6 +2,7 @@ require('proof')(13, async okay => {
     const path = require('path')
 
     const Strata = require('b-tree')
+    const Operation = require('operation')
     const FileSystem = require('b-tree/filesystem')
     const Magazine = require('magazine')
     const Trampoline = require('reciprocate')
@@ -30,7 +31,7 @@ require('proof')(13, async okay => {
         const destructible = new Destructible($ => $(), 'riffle.t.forward')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
-        const handles = new FileSystem.HandleCache(new Magazine)
+        const handles = new Operation.Cache(new Magazine)
         const storage = await FileSystem.open({ directory, handles })
         destructible.rescue($ => $(), 'test', async () => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
@@ -59,7 +60,7 @@ require('proof')(13, async okay => {
         const destructible = new Destructible($ => $(), 'riffle.reverse')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
-        const handles = new FileSystem.HandleCache(new Magazine)
+        const handles = new Operation.Cache(new Magazine)
         const storage = await FileSystem.open({ directory, handles })
         destructible.rescue($ => $(), 'test', async () => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
@@ -88,7 +89,7 @@ require('proof')(13, async okay => {
         const destructible = new Destructible($ => $(), 'riffle.exclusive')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
-        const handles = new FileSystem.HandleCache(new Magazine)
+        const handles = new Operation.Cache(new Magazine)
         const storage = await FileSystem.open({ directory, handles })
         destructible.rescue($ => $(), 'test', async () => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
@@ -115,7 +116,7 @@ require('proof')(13, async okay => {
         const destructible = new Destructible($ => $(), 'riffle.t.reverse.exclusive')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
-        const handles = new FileSystem.HandleCache(new Magazine)
+        const handles = new Operation.Cache(new Magazine)
         const storage = await FileSystem.open({ directory, handles })
         destructible.rescue($ => $(), 'test', async () => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
@@ -142,7 +143,7 @@ require('proof')(13, async okay => {
         const destructible = new Destructible($ => $(), 'riffle.forward.missed')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
-        const handles = new FileSystem.HandleCache(new Magazine)
+        const handles = new Operation.Cache(new Magazine)
         const storage = await FileSystem.open({ directory, handles })
         destructible.rescue($ => $(), 'test', async () => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
@@ -169,7 +170,7 @@ require('proof')(13, async okay => {
         const destructible = new Destructible($ => $(), 'riffle.reverse.missed')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
-        const handles = new FileSystem.HandleCache(new Magazine)
+        const handles = new Operation.Cache(new Magazine)
         const storage = await FileSystem.open({ directory, handles })
         destructible.rescue($ => $(), 'test', async () => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
@@ -196,7 +197,7 @@ require('proof')(13, async okay => {
         const destructible = new Destructible($ => $(), 'riffle.reverse.end')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
-        const handles = new FileSystem.HandleCache(new Magazine)
+        const handles = new Operation.Cache(new Magazine)
         const storage = await FileSystem.open({ directory, handles })
         destructible.rescue($ => $(), 'test', async () => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
@@ -223,7 +224,7 @@ require('proof')(13, async okay => {
         const destructible = new Destructible($ => $(), 'riffle.forward.iterator')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
-        const handles = new FileSystem.HandleCache(new Magazine)
+        const handles = new Operation.Cache(new Magazine)
         const storage = await FileSystem.open({ directory, handles })
         destructible.rescue($ => $(), 'test', async () => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
@@ -250,7 +251,7 @@ require('proof')(13, async okay => {
         const destructible = new Destructible($ => $(), 'riffle.reverse.min')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
-        const handles = new FileSystem.HandleCache(new Magazine)
+        const handles = new Operation.Cache(new Magazine)
         const storage = await FileSystem.open({ directory, handles })
         destructible.rescue($ => $(), 'test', async () => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
