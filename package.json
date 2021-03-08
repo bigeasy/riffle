@@ -1,6 +1,6 @@
 {
     "name":                 "riffle",
-    "version":              "2.0.0-alpha.72",
+    "version":              "2.0.0-alpha.73",
     "description":
 
       "Forward and reverse iteration of a Strata b-tree.",
