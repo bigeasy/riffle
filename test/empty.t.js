@@ -22,7 +22,7 @@ require('proof')(2, async okay => {
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
         const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, create: true }))
-        destructible.rescue($ => $(), 'test', async () => {
+        destructible.ephemeral($ => $(), 'test', async () => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MIN)
@@ -50,7 +50,7 @@ require('proof')(2, async okay => {
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
         const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, create: true }))
-        destructible.rescue($ => $(), 'test', async () => {
+        destructible.ephemeral($ => $(), 'test', async () => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MAX, { reverse: true })
