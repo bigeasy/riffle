@@ -28,7 +28,7 @@
                             "b-tree":                       "2.0.0-alpha.106",
                             "destructible":                 "7.0.0-alpha.63",
                             "magazine":                     "6.0.0-alpha.7",
-                            "operation":                    "6.0.0-alpha.7",
+                            "operation":                    "6.0.0-alpha.8",
                             "proof":                        "^9.0.2",
                             "reciprocate":                  "0.0.6",
                             "turnstile":                    "6.0.0-alpha.74"
