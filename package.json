@@ -31,7 +31,7 @@
                             "operation":                    "6.0.0-alpha.8",
                             "proof":                        "^9.0.2",
                             "reciprocate":                  "0.0.7",
-                            "turnstile":                    "6.0.0-alpha.75"
+                            "turnstile":                    "6.0.0-alpha.76"
     },
     "main":                 "riffle",
     "scripts":
