@@ -18,7 +18,9 @@ module.exports = function (strata, key, {
                             ? cursor.page.items.length
                             : key === Strata.MIN
                                 ? 0
-                                : index + 1
+                                : inclusive && ! found
+                                    ? index
+                                    : index + 1
                         const start = Math.max(end - slice, 0)
                         const sliced = cursor.page.items.slice(start, end)
                         key = start == 0

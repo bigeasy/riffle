@@ -1,4 +1,4 @@
-require('proof')(13, async okay => {
+require('proof')(14, async okay => {
     const path = require('path')
 
     const Strata = require('b-tree')
@@ -176,6 +176,33 @@ require('proof')(13, async okay => {
             const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, 'i', { slice: 2, inclusive: false, reverse: true })
+            while (!iterator.done) {
+                iterator.next(trampoline, items => {
+                    for (const item of items) {
+                        gathered.push(item.key)
+                    }
+                })
+                while (trampoline.seek()) {
+                    await trampoline.shift()
+                }
+            }
+            okay(gathered, expected.slice().reverse().slice(1), 'reverse missed')
+            destructible.destroy()
+        })
+        await destructible.promise
+        await handles.shrink(0)
+    }
+    // https://github.com/bigeasy/riffle/issues/248
+    {
+        const destructible = new Destructible($ => $(), 'riffle.reverse.missed')
+        const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
+        const pages = new Magazine
+        const handles = new Operation.Cache(new Magazine)
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles }))
+        destructible.ephemeral($ => $(), 'test', async () => {
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
+            const gathered = [], trampoline = new Trampoline
+            const iterator = riffle(strata, 'i', { slice: 2, inclusive: true, reverse: true })
             while (!iterator.done) {
                 iterator.next(trampoline, items => {
                     for (const item of items) {
