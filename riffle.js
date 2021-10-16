@@ -3,7 +3,7 @@ const Strata = require('b-tree')
 const whittle = require('whittle')
 
 module.exports = function (strata, key, {
-    slice = 32, inclusive = true, reverse = false, comparator = strata.options.comparator.leaf
+    slice = 32, inclusive = true, reverse = false, comparator = strata.options.comparator.leaf, partial = Number.MAX_SAFE_INTEGER
 } = {}) {
     if (reverse) {
         const iterator = {
@@ -13,7 +13,7 @@ module.exports = function (strata, key, {
                 if (key == null) {
                     terminator.done = true
                 } else {
-                    const found = cursor => {
+                    strata.search(trampoline, key, partial, ! inclusive, cursor => {
                         const { index, found } = cursor
                         const end = key === Strata.MAX
                             ? cursor.page.items.length
@@ -32,8 +32,7 @@ module.exports = function (strata, key, {
                         inclusive = false
                         comparator = strata.options.comparator.leaf
                         consume(sliced.reverse())
-                    }
-                    strata.search2(trampoline, key, comparator, ! inclusive, found)
+                    })
                 }
             }
         }

@@ -1,15 +1,17 @@
-require('proof')(14, async okay => {
+require('proof')(16, async okay => {
     const path = require('path')
 
     const Strata = require('b-tree')
     const Operation = require('operation')
     const FileSystem = require('b-tree/filesystem')
     const Magazine = require('magazine')
-    const Trampoline = require('reciprocate')
+    const { Trampoline } = require('reciprocate')
     const Destructible = require('destructible')
     const Turnstile = require('turnstile')
 
     const mvcc = require('mvcc')
+
+    const ascension = require('ascension')
 
     const utilities = require('b-tree/utilities')
 
@@ -25,16 +27,22 @@ require('proof')(14, async okay => {
       '1.3': [ [ 'insert', 0, 'g' ], [ 'insert', 1, 'h' ], [ 'insert', 2, 'j' ], [ 'delete', 0 ] ]
     })
 
-    const expected = [ 'a', 'b', 'c', 'd', 'e', 'f', 'h', 'j' ]
+    const expected = ([ 'a', 'b', 'c', 'd', 'e', 'f', 'h', 'j' ]).map(letter => [ letter ])
+
+    function extractor (parts) {
+        return [ parts[0] ]
+    }
+
+    const comparator = ascension([ String ])
 
     {
         const destructible = new Destructible($ => $(), 'riffle.t.forward')
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
-        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles }))
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
         destructible.ephemeral($ => $(), 'test', async () => {
-            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MIN, { slice: 2 })
             okay(iterator.type != null, 'reverse type not null')
@@ -61,9 +69,9 @@ require('proof')(14, async okay => {
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
-        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles }))
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
         destructible.ephemeral($ => $(), 'test', async () => {
-            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MAX, { slice: 2, reverse: true })
             okay(iterator.type != null, 'reverse type not null')
@@ -90,11 +98,11 @@ require('proof')(14, async okay => {
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
-        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles }))
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
         destructible.ephemeral($ => $(), 'test', async () => {
-            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
             const gathered = [], trampoline = new Trampoline
-            const iterator = riffle(strata, 'b', { slice: 2, inclusive: false })
+            const iterator = riffle(strata, [ 'b' ], { slice: 2, inclusive: false })
             while (!iterator.done) {
                 iterator.next(trampoline, items => {
                     for (const item of items) {
@@ -117,11 +125,11 @@ require('proof')(14, async okay => {
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
-        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles }))
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
         destructible.ephemeral($ => $(), 'test', async () => {
-            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
             const gathered = [], trampoline = new Trampoline
-            const iterator = riffle(strata, 'h', { slice: 2, inclusive: false, reverse: true })
+            const iterator = riffle(strata, [ 'h' ], { slice: 2, inclusive: false, reverse: true })
             while (!iterator.done) {
                 iterator.next(trampoline, items => {
                     for (const item of items) {
@@ -144,11 +152,11 @@ require('proof')(14, async okay => {
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
-        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles }))
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
         destructible.ephemeral($ => $(), 'test', async () => {
-            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
             const gathered = [], trampoline = new Trampoline
-            const iterator = riffle(strata, 'Z', { inclusive: false })
+            const iterator = riffle(strata, [ 'Z' ], { inclusive: false })
             while (!iterator.done) {
                 iterator.next(trampoline, items => {
                     for (const item of items) {
@@ -171,11 +179,11 @@ require('proof')(14, async okay => {
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
-        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles }))
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
         destructible.ephemeral($ => $(), 'test', async () => {
-            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
             const gathered = [], trampoline = new Trampoline
-            const iterator = riffle(strata, 'i', { slice: 2, inclusive: false, reverse: true })
+            const iterator = riffle(strata, [ 'i' ], { slice: 2, inclusive: false, reverse: true })
             while (!iterator.done) {
                 iterator.next(trampoline, items => {
                     for (const item of items) {
@@ -198,11 +206,11 @@ require('proof')(14, async okay => {
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
-        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles }))
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
         destructible.ephemeral($ => $(), 'test', async () => {
-            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
             const gathered = [], trampoline = new Trampoline
-            const iterator = riffle(strata, 'i', { slice: 2, inclusive: true, reverse: true })
+            const iterator = riffle(strata, [ 'i' ], { slice: 2, inclusive: true, reverse: true })
             while (!iterator.done) {
                 iterator.next(trampoline, items => {
                     for (const item of items) {
@@ -225,11 +233,11 @@ require('proof')(14, async okay => {
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
-        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles }))
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
         destructible.ephemeral($ => $(), 'test', async () => {
-            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
             const gathered = [], trampoline = new Trampoline
-            const iterator = riffle(strata, 'l', { slice: 2, inclusive: false, reverse: true })
+            const iterator = riffle(strata, [ 'l' ], { slice: 2, inclusive: false, reverse: true })
             while (!iterator.done) {
                 iterator.next(trampoline, items => {
                     for (const item of items) {
@@ -252,9 +260,9 @@ require('proof')(14, async okay => {
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
-        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles }))
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
         destructible.ephemeral($ => $(), 'test', async () => {
-            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MIN)
             while (!iterator.done) {
@@ -279,9 +287,9 @@ require('proof')(14, async okay => {
         const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
         const pages = new Magazine
         const handles = new Operation.Cache(new Magazine)
-        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles }))
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
         destructible.ephemeral($ => $(), 'test', async () => {
-            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile })
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
             const gathered = [], trampoline = new Trampoline
             const iterator = riffle(strata, Strata.MIN, { reverse: true })
             while (!iterator.done) {
@@ -295,6 +303,60 @@ require('proof')(14, async okay => {
                 }
             }
             okay(gathered, [], 'reverse min')
+            destructible.destroy()
+        })
+        await destructible.promise
+        await handles.shrink(0)
+    }
+
+    {
+        const destructible = new Destructible($ => $(), 'riffle.reverse.partial.hit')
+        const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
+        const pages = new Magazine
+        const handles = new Operation.Cache(new Magazine)
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
+        destructible.ephemeral($ => $(), 'test', async () => {
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
+            const gathered = [], trampoline = new Trampoline
+            const iterator = riffle(strata, [ 'h', null ], { reverse: true, partial: 1 })
+            while (!iterator.done) {
+                iterator.next(trampoline, items => {
+                    for (const item of items) {
+                        gathered.push(item.key)
+                    }
+                })
+                while (trampoline.seek()) {
+                    await trampoline.shift()
+                }
+            }
+            okay(gathered, expected.slice().reverse().slice(1), 'reverse parital hit')
+            destructible.destroy()
+        })
+        await destructible.promise
+        await handles.shrink(0)
+    }
+
+    {
+        const destructible = new Destructible($ => $(), 'riffle.reverse.partial.hit')
+        const turnstile = new Turnstile(destructible.durable($ => $(), 'turnstile'))
+        const pages = new Magazine
+        const handles = new Operation.Cache(new Magazine)
+        const storage = new FileSystem.Writer(destructible.durable($ => $(), 'storage'), await FileSystem.open({ directory, handles, extractor }))
+        destructible.ephemeral($ => $(), 'test', async () => {
+            const strata = new Strata(destructible.durable($ => $(), 'strata'), { pages, storage, turnstile, comparator })
+            const gathered = [], trampoline = new Trampoline
+            const iterator = riffle(strata, [ 'i', null ], { reverse: true, partial: 1 })
+            while (!iterator.done) {
+                iterator.next(trampoline, items => {
+                    for (const item of items) {
+                        gathered.push(item.key)
+                    }
+                })
+                while (trampoline.seek()) {
+                    await trampoline.shift()
+                }
+            }
+            okay(gathered, expected.slice().reverse().slice(1), 'reverse parital miss')
             destructible.destroy()
         })
         await destructible.promise
