@@ -1,8 +1,9 @@
 const mvcc = require('mvcc')
 const Strata = require('b-tree')
+const whittle = require('whittle')
 
 module.exports = function (strata, key, {
-    slice = 32, inclusive = true, reverse = false
+    slice = 32, inclusive = true, reverse = false, comparator = strata.options.comparator.leaf
 } = {}) {
     if (reverse) {
         const iterator = {
@@ -12,7 +13,7 @@ module.exports = function (strata, key, {
                 if (key == null) {
                     terminator.done = true
                 } else {
-                    strata.search(trampoline, key, ! inclusive, cursor => {
+                    const found = cursor => {
                         const { index, found } = cursor
                         const end = key === Strata.MAX
                             ? cursor.page.items.length
@@ -29,8 +30,10 @@ module.exports = function (strata, key, {
                                 : cursor.page.key
                             : cursor.page.items[start].key
                         inclusive = false
+                        comparator = strata.options.comparator.leaf
                         consume(sliced.reverse())
-                    })
+                    }
+                    strata.search2(trampoline, key, comparator, ! inclusive, found)
                 }
             }
         }
