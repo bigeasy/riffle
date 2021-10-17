@@ -21,9 +21,9 @@ require('proof')(16, async okay => {
 
     await utilities.reset(directory)
     await utilities.serialize(directory, {
-      '0.0': [ [ '0.1', null ], [ '1.1', 'd' ], [ '1.3', 'g' ] ],
-      '0.1': [ [ 'right', 'd' ], [ 'insert', 0, 'a' ], [ 'insert', 1, 'b' ], [ 'insert', 2, 'c' ] ],
-      '1.1': [ [ 'right', 'g' ], [ 'insert', 0, 'd' ], [ 'insert', 1, 'e' ], [ 'insert', 2, 'f' ] ],
+      '0.0': [ [ '0.1', null ], [ '1.1', [ 'd' ] ], [ '1.3', [ 'g' ] ] ],
+      '0.1': [ [ 'right', [ 'd' ] ], [ 'insert', 0, 'a' ], [ 'insert', 1, 'b' ], [ 'insert', 2, 'c' ] ],
+      '1.1': [ [ 'right', [ 'g' ] ], [ 'insert', 0, 'd' ], [ 'insert', 1, 'e' ], [ 'insert', 2, 'f' ] ],
       '1.3': [ [ 'insert', 0, 'g' ], [ 'insert', 1, 'h' ], [ 'insert', 2, 'j' ], [ 'delete', 0 ] ]
     })
 
