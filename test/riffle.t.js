@@ -33,7 +33,7 @@ require('proof')(16, async okay => {
         return [ parts[0] ]
     }
 
-    const comparator = ascension([ String ])
+    const comparator = ascension([ String ], true)
 
     {
         const destructible = new Destructible($ => $(), 'riffle.t.forward')
