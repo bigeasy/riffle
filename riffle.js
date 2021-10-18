@@ -1,6 +1,5 @@
 const mvcc = require('mvcc')
 const Strata = require('b-tree')
-const whittle = require('whittle')
 
 module.exports = function (strata, key, {
     slice = 32, inclusive = true, reverse = false, comparator = strata.options.comparator.leaf
