@@ -25,7 +25,7 @@
     },
     "devDependencies":
     {
-                            "ascension":                    "3.0.0-alpha.11",
+                            "ascension":                    "3.0.0-alpha.12",
                             "b-tree":                       "2.0.0-alpha.125",
                             "destructible":                 "7.0.0-alpha.71",
                             "magazine":                     "6.0.0-alpha.9",
